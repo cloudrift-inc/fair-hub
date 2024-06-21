@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
-import {getApiKey, getApiUrl} from "@/lib/faircompute";
+import {getFairApiKey, getFairApiUrl} from "@/lib/faircompute";
 import MyPodsCard from './MyPodsCard';
 
 interface ExecutorInfoResponse {
@@ -30,14 +30,14 @@ interface ListExecutorsResponse {
 }
 
 const fetchExecutorIds = async (): Promise<ListExecutorsResponse> => {
-  const apiUrl = getApiUrl();
+  const apiUrl = getFairApiUrl();
   console.log(apiUrl)
   const response = await fetch(`${apiUrl}/api/v1/executors/list`, {
     
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "X-API-Key": getApiKey(),
+      "X-API-Key": getFairApiKey(),
       "Authorization": "Bearer " + localStorage.getItem("token")
 },
   });
@@ -53,7 +53,7 @@ const fetchExecutorIds = async (): Promise<ListExecutorsResponse> => {
 };
 
 const fetchExecutorInfo = async (executorId: string): Promise<ExecutorInfoResponse> => {
-  const apiUrl = getApiUrl();
+  const apiUrl = getFairApiUrl();
   const response = await fetch(`${apiUrl}/api/v1/executors/${executorId}/info`, {
     method: "POST",
     headers: {

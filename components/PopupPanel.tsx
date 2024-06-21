@@ -4,7 +4,7 @@ import {useMutation} from '@tanstack/react-query';
 import '../app/globals.css';
 import { useRouter } from 'next/router';
 import MyPodPanel from './MyPodPanel'; // Adjust the import path if necessary
-import {getApiKey, getApiUrl} from '@/lib/faircompute';
+import {FAIR_API_VERSION, getFairApiKey, getFairApiUrl} from '@/lib/faircompute';
 
 interface RequestData {
     node_id: string;
@@ -30,16 +30,16 @@ interface PopupPanelProps {
 }
 
 const createExecutor = async (requestData: RequestData) => {
-    const apiUrl = getApiUrl();
+    const apiUrl = getFairApiUrl();
     const response = await fetch(`${apiUrl}/api/v1/executors/create`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            "X-API-Key": getApiKey(),
+            "X-API-Key": getFairApiKey(),
             "Authorization": "Bearer " + localStorage.getItem("token")
         },
         body: JSON.stringify({
-            "version": "2024-06-17",
+            "version": FAIR_API_VERSION,
             "data": requestData,
         })
     });

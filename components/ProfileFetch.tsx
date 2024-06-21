@@ -1,4 +1,4 @@
-import { getApiUrl } from "../lib/faircompute";
+import { getFairApiUrl } from "../lib/faircompute";
 
 export interface ProfileData {
     name: string;
@@ -6,7 +6,7 @@ export interface ProfileData {
 }
 
 export const fetchProfile = async (token: string): Promise<ProfileData> => {
-    const apiUrl = getApiUrl();
+    const apiUrl = getFairApiUrl();
     const response = await fetch(`${apiUrl}/api/v1/auth/me`, {
         method: "POST",
         headers: {
