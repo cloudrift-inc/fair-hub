@@ -1,15 +1,9 @@
+import { getApiUrl } from "../lib/faircompute";
+
 export interface ProfileData {
     name: string;
     email: string;
 }
-
-const getApiUrl = (): string => {
-    if (process.env.NODE_ENV === "production") {
-        return process.env.REACT_APP_PROD_API_URL || "";
-    } else {
-        return process.env.REACT_APP_LOCAL_API_URL || "";
-    }
-};
 
 export const fetchProfile = async (token: string): Promise<ProfileData> => {
     const apiUrl = getApiUrl();

@@ -1,14 +1,7 @@
 import { useRouter } from 'next/router';
+import {getApiKey, getApiUrl} from "@/lib/faircompute";
 import React, { useEffect, useState, useCallback } from 'react';
 import "../app/globals.css";
-
-const getApiUrl = (): string => {
-  if (process.env.NODE_ENV === 'production') {
-    return process.env.REACT_APP_PROD_API_URL || '';
-  } else {
-    return process.env.REACT_APP_LOCAL_API_URL || '';
-  }
-};
 
 const Return: React.FC = () => {
   const [status, setStatus] = useState<string>('');
@@ -32,7 +25,7 @@ const Return: React.FC = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-API-Key': 'debug_api_key',
+          'X-API-Key': getApiKey(),
           'Authorization': `Bearer ${token}`, 
         },
         body: JSON.stringify({

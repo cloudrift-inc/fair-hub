@@ -7,6 +7,7 @@ import Image from "next/image";
 import Button from "../components/foundational/Button";
 import Link from "../components/foundational/Link";
 import { useRouter } from 'next/router'
+import { getApiUrl } from "../lib/faircompute";
 
 
 interface FormData {
@@ -21,14 +22,6 @@ interface LoginResponse {
     email: string;
   };
 }
-
-const getApiUrl = (): string => {
-  if (process.env.NODE_ENV === "production") {
-    return process.env.REACT_APP_PROD_API_URL || "";
-  } else {
-    return process.env.REACT_APP_LOCAL_API_URL || "";
-  }
-};
 
 const login = async (formData: FormData): Promise<LoginResponse> => {
   const apiUrl = getApiUrl();

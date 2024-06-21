@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import GpuCard from "./GpuCard";
 import {useMutation} from "@tanstack/react-query";
+import {getApiKey, getApiUrl} from "@/lib/faircompute";
 
 interface NodeInfoResponse {
     instance?: {
@@ -30,13 +31,6 @@ interface ListNodesResponse {
     nodes: string[];
 }
 
-const getApiUrl = (): string => {
-    if (process.env.NODE_ENV === "production") {
-        return process.env.REACT_APP_PROD_API_URL || "";
-    } else {
-        return process.env.REACT_APP_LOCAL_API_URL || "";
-    }
-};
 interface GPUInfoDashboardProps {
     currentPage: string;
 }
@@ -47,7 +41,7 @@ const fetchNodeIds = async (): Promise<ListNodesResponse> => {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "X-API-Key": "debug_api_key",
+            "X-API-Key": getApiKey(),
             "Authorization": "Bearer " + localStorage.getItem("token")
 
         },
@@ -68,7 +62,7 @@ const fetchNodeInfo = async (nodeId: string): Promise<NodeInfoResponse> => {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "X-API-Key": "debug_api_key",
+            "X-API-Key": getApiKey(),
             "Authorization": "Bearer " + localStorage.getItem("token")
 
         },
