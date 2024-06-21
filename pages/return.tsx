@@ -1,14 +1,7 @@
 import { useRouter } from 'next/router';
+import {FAIR_API_VERSION, getFairApiKey, getFairApiUrl} from "@/lib/faircompute";
 import React, { useEffect, useState, useCallback } from 'react';
 import "../app/globals.css";
-
-const getApiUrl = (): string => {
-  if (process.env.NODE_ENV === 'production') {
-    return process.env.REACT_APP_PROD_API_URL || '';
-  } else {
-    return process.env.REACT_APP_LOCAL_API_URL || '';
-  }
-};
 
 const Return: React.FC = () => {
   const [status, setStatus] = useState<string>('');
@@ -24,7 +17,7 @@ const Return: React.FC = () => {
     if (!token) {
       throw new Error('No auth token found');
     }
-    const apiUrl = getApiUrl();
+    const apiUrl = getFairApiUrl();
     console.log(sessionId);
 
     try {
@@ -32,11 +25,11 @@ const Return: React.FC = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-API-Key': 'debug_api_key',
+          'X-API-Key': getFairApiKey(),
           'Authorization': `Bearer ${token}`, 
         },
         body: JSON.stringify({
-          version: "2024-06-17",
+          version: FAIR_API_VERSION,
           data: {
             amount: amount,
             stripe_transaction_id: sessionId,

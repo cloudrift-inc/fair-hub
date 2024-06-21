@@ -7,6 +7,7 @@ import Image from "next/image";
 import Button from "../components/foundational/Button";
 import Link from "../components/foundational/Link";
 import { useRouter } from 'next/router'
+import {FAIR_API_VERSION, getFairApiUrl} from "../lib/faircompute";
 
 
 interface FormData {
@@ -22,23 +23,15 @@ interface LoginResponse {
   };
 }
 
-const getApiUrl = (): string => {
-  if (process.env.NODE_ENV === "production") {
-    return process.env.REACT_APP_PROD_API_URL || "";
-  } else {
-    return process.env.REACT_APP_LOCAL_API_URL || "";
-  }
-};
-
 const login = async (formData: FormData): Promise<LoginResponse> => {
-  const apiUrl = getApiUrl();
+  const apiUrl = getFairApiUrl();
   const response = await fetch(`${apiUrl}/api/v1/auth/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      version: "2024-06-17",
+      version: FAIR_API_VERSION,
       data: {
         email: formData.email,
         password: formData.password,

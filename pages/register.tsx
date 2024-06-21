@@ -7,6 +7,7 @@ import Image from "next/image";
 import Button from "../components/foundational/Button";
 import Link from "../components/foundational/Link";
 import { useRouter } from 'next/router';
+import {FAIR_API_VERSION, getFairApiKey, getFairApiUrl} from "@/lib/faircompute";
 
 interface FormData {
   username: string;
@@ -19,16 +20,8 @@ interface SignupResponse {
   message: string;
 }
 
-const getApiUrl = (): string => {
-  if (process.env.NODE_ENV === "production") {
-    return process.env.REACT_APP_PROD_API_URL || "";
-  } else {
-    return process.env.REACT_APP_LOCAL_API_URL || "";
-  }
-};
-
 const signup = async (formData: FormData): Promise<SignupResponse> => {
-  const apiUrl = getApiUrl();
+  const apiUrl = getFairApiUrl();
   console.log("API URL:", apiUrl);
   console.log("Form Data:", formData);
 
@@ -36,10 +29,10 @@ const signup = async (formData: FormData): Promise<SignupResponse> => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "X-API-Key": "debug_api_key",
+      "X-API-Key": getFairApiKey(),
     },
     body: JSON.stringify({
-      version: "2024-06-17",
+      version: FAIR_API_VERSION,
       data: {
         name: formData.username,
         email: formData.email,
