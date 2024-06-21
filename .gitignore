@@ -1,0 +1,11 @@
+# Next.js
+.next
+
+# Node.js
+node_modules
+
+# Kate
+.kate-swp
+
+# JetBrains IDE
+.idea
