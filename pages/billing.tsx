@@ -8,6 +8,7 @@ import "../app/globals.css";
 import { fetchProfile } from "../components/ProfileFetch";
 import { useMutation } from "@tanstack/react-query";
 import "../app/globals.css";
+import {getStripePublishableKey} from "@/lib/faircompute";
 
 interface ProfileData {
   email: string;
@@ -51,7 +52,7 @@ const Billing: React.FC = () => {
   });
 
   const stripePromise = loadStripe(
-    process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || "",
+    getStripePublishableKey()
   );
 
   const fetchClientSecret = useCallback(async () => {

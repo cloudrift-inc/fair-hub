@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import {FAIR_API_VERSION, getFairApiKey, getFairApiUrl} from "@/lib/faircompute";
+import {FAIR_API_VERSION, getFairProviderPubApiKey, getFairApiUrl} from "@/lib/faircompute";
 import React, { useEffect, useState, useCallback } from 'react';
 import "../app/globals.css";
 
@@ -25,7 +25,7 @@ const Return: React.FC = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-API-Key': getFairApiKey(),
+          'X-API-Key': getFairProviderPubApiKey(),
           'Authorization': `Bearer ${token}`, 
         },
         body: JSON.stringify({

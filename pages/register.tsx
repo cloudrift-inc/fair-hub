@@ -7,7 +7,7 @@ import Image from "next/image";
 import Button from "../components/foundational/Button";
 import Link from "../components/foundational/Link";
 import { useRouter } from 'next/router';
-import {FAIR_API_VERSION, getFairApiKey, getFairApiUrl} from "@/lib/faircompute";
+import {FAIR_API_VERSION, getFairProviderPubApiKey, getFairApiUrl} from "@/lib/faircompute";
 
 interface FormData {
   username: string;
@@ -29,7 +29,7 @@ const signup = async (formData: FormData): Promise<SignupResponse> => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "X-API-Key": getFairApiKey(),
+      "X-API-Key": getFairProviderPubApiKey(),
     },
     body: JSON.stringify({
       version: FAIR_API_VERSION,

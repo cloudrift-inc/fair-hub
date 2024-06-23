@@ -1,7 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import Stripe from "stripe";
+import {getStripeSecretKey} from "@/lib/faircompute";
 
-const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
+const stripeSecretKey = getStripeSecretKey();
 
 if (!stripeSecretKey) {
   throw new Error("Stripe secret key not found in environment variables");
