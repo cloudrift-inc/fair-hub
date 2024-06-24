@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import GpuCard from "./GpuCard";
 import {useMutation} from "@tanstack/react-query";
-import {getFairApiKey, getFairApiUrl} from "@/lib/faircompute";
+import {getFairProviderPubApiKey, getFairApiUrl} from "@/lib/faircompute";
 
 interface NodeInfoResponse {
     instance?: {
@@ -41,7 +41,7 @@ const fetchNodeIds = async (): Promise<ListNodesResponse> => {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "X-API-Key": getFairApiKey(),
+            "X-API-Key": getFairProviderPubApiKey(),
             "Authorization": "Bearer " + localStorage.getItem("token")
 
         },
@@ -62,7 +62,7 @@ const fetchNodeInfo = async (nodeId: string): Promise<NodeInfoResponse> => {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "X-API-Key": getFairApiKey(),
+            "X-API-Key": getFairProviderPubApiKey(),
             "Authorization": "Bearer " + localStorage.getItem("token")
 
         },

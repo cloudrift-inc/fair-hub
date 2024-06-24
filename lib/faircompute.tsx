@@ -1,16 +1,32 @@
 export function getFairApiUrl() : string {
-    if (process.env.NODE_ENV === 'production') {
-        return process.env.REACT_APP_PROD_FAIR_API_URL || '';
+    if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'production') {
+        return process.env.NEXT_PUBLIC_PROD_FAIR_API_URL || '';
     } else {
-        return process.env.REACT_APP_LOCAL_FAIR_API_URL || '';
+        return process.env.NEXT_PUBLIC_LOCAL_FAIR_API_URL || '';
     }
 }
 
-export function getFairApiKey() : string {
-    if (process.env.NODE_ENV === 'production') {
-        return process.env.PROD_FAIR_API_KEY || '';
+export function getFairProviderPubApiKey() : string {
+    if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'production') {
+        return process.env.NEXT_PUBLIC_PROD_FAIR_PROVIDER_PUB_KEY || '';
     } else {
-        return process.env.LOCAL_FAIR_API_KEY || '';
+        return process.env.NEXT_PUBLIC_LOCAL_FAIR_PROVIDER_PUB_KEY || '';
+    }
+}
+
+export function getStripePublishableKey() : string {
+    if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'production') {
+        return process.env.NEXT_PUBLIC_PROD_STRIPE_PUBLISHABLE_KEY || '';
+    } else {
+        return process.env.NEXT_PUBLIC_LOCAL_STRIPE_PUBLISHABLE_KEY || '';
+    }
+}
+
+export function getStripeSecretKey() : string {
+    if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'production') {
+        return process.env.PROD_STRIPE_SECRET_KEY || '';
+    } else {
+        return process.env.LOCAL_STRIPE_SECRET_KEY || '';
     }
 }
 
