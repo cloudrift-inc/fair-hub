@@ -8,6 +8,7 @@ interface CardProps {
   description: string;
   features: string[];
   className?: string;
+  link: string;
 }
 
 const GPURentalCard: React.FC<CardProps> = ({
@@ -16,6 +17,7 @@ const GPURentalCard: React.FC<CardProps> = ({
   description,
   features,
   className = "",
+  link,
 }) => {
   return (
     <div
@@ -30,7 +32,7 @@ const GPURentalCard: React.FC<CardProps> = ({
           <li key={index}>{feature}</li>
         ))}
       </ul>
-      <Link href="/console">
+      <Link href={link}>
         <Button className="w-full rounded-full border border-white bg-zinc-900 px-4 py-4 font-bold text-white transition-colors duration-200 group-hover:border-transparent group-hover:bg-[#191970]">
           Rent a GPU Now
         </Button>
