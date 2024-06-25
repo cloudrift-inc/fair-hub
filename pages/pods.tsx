@@ -6,10 +6,22 @@ import MyPodsDashboard from '../components/MyPodsDashboard';
 import SidebarMyPods from '../components/SideBarMyPods';
 import { useRouter } from 'next/router';
 import LogoutIcon from '@mui/icons-material/Logout';
+import {fetchProfile, ProfileData} from "../components/ProfileFetch";
+import {useMutation} from "@tanstack/react-query";
+import Button from '../components/foundational/Button';
 
 const LogoutButton = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const router = useRouter();
+  const [error, setError] = useState<string>("");
+  const [profile, setProfile] = useState<ProfileData | null>(null);
+    const fetchProfileData = async (token: string): Promise<ProfileData> => {
+        try {
+            return await fetchProfile(token);
+        } catch (error: any) {
+            throw new Error(`${error.message}`);
+        }
+    };
 
   const handleButtonClick = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -22,6 +34,33 @@ const LogoutButton = () => {
     router.push('/console');
   };
 
+  const mutation = useMutation<ProfileData, Error, string>({
+    mutationFn: fetchProfileData,
+    onSuccess: (data) => {
+        console.log("Profile fetched successfully:", data);
+        setProfile(data);
+    },
+    onError: (error) => {
+        setError(error.message);
+        console.error("Error fetching profile:", error);
+    },
+});
+
+    useEffect(() => {
+        const token = localStorage.getItem("token") || "";
+        if (token) {
+            mutation.mutate(token);
+        } else {
+            console.error("No auth token found");
+            setError("Please Log In to access this page.");
+        }
+    }, []);
+
+
+    if (error) {
+        return <div>Error: {error}</div>;
+    }
+
   return (
     <div className="relative">
       <button
@@ -32,7 +71,7 @@ const LogoutButton = () => {
           <div className="rounded-radius-8 flex flex-row flex-wrap items-center justify-start py-0 pr-[5px] pl-0">
             <div className="rounded-radius-8 flex flex-col items-start justify-center">
               <a className="[text-decoration:none] relative leading-[20px] font-medium text-[inherit] inline-block min-w-[78px]">
-                Username
+              {profile ? profile.name : "" || "Username"}
               </a>
             </div>
             <div className="rounded-radius-8 flex flex-row items-center justify-center p-[5px] ml-[2px]">
@@ -127,7 +166,8 @@ const ConsoleRenting: NextPage = () => {
             />
           </div>
           
-          {/* <div className="absolute md:top-[172px] top-[232px] left-[205px] md:left-[305px] w-[130px] h-10">
+        {/* Add more GpuCard components as needed */}
+          <div className="absolute md:top-[172px] top-[232px] left-[205px] md:left-[305px] w-[130px] h-10">
             <Button className="w-26 md:w-full h-full rounded-lg bg-[#292929] flex items-center px-4">
               <div className="w-26 md:w-full text-left font-medium">Filter by</div>
             </Button>
