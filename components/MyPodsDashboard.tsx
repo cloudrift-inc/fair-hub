@@ -102,15 +102,6 @@ const MyPodsDashboard: React.FC = () => {
       className="flex flex-wrap items-start justify-start p-4"
       style={{ rowGap: "28px", columnGap: "22px" }}
     >
-        <MyPodsCard
-          key="1"
-          title={`NVIDIA GeForce RTX 4090`}
-          gpuQuantity={1}
-          cpuCores={1}
-          ram={`16 GB`}
-          status={"Created"}
-          executorId={"abbbb-hjs"}
-        />
       {executorInfoList.map((executorInfo, index) => (
         <MyPodsCard
           key={index}
