@@ -80,7 +80,10 @@ const MyPodsCard: React.FC<MyPodsCardProps> = ({
           <div className=" font-semibold" style={{ fontSize: "16px" }}>{title}</div>
           <div
             className={`ml-2 font-semibold text-xs px-2 py-1 rounded ${
-              status === 'Active' ? 'bg-[#6FCF97] text-[#219653] border border-[#219653]' : 'bg-[#BD3D44] text-[#AE1820] border border-[#AE1820]'}`
+              status === 'Active' ? 'bg-[#6FCF97] text-[#219653] border border-[#219653]' :
+              status === 'Created' ? 'bg-[#F3CCFF] text-[#A555EC] border border-[#D09CFA]' :
+              'bg-[#BD3D44] text-[#AE1820] border border-[#AE1820]'
+            }`
             }
             style={{ fontSize: "15px" }}
           >
