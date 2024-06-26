@@ -12,6 +12,7 @@ interface ExecutorInfoResponse {
   status: string;
   resource_info?: ExecutorResourceInfo;
   usage_info?: ExecutorUsageInfo;
+  executor_id: string;
 }
 
 interface ExecutorResourceInfo {
@@ -43,12 +44,10 @@ const fetchExecutorIds = async (): Promise<ListExecutorsResponse> => {
   });
 
   if (!response.ok) {
-    console.log(response.statusText)
     throw new Error("Error fetching executor IDs: " + response.statusText);
   }
 
   const data = await response.json();
-  console.log(data);
   return data["data"];
 };
 
@@ -64,13 +63,11 @@ const fetchExecutorInfo = async (executorId: string): Promise<ExecutorInfoRespon
   });
 
   if (!response.ok) {
-    console.log(response.statusText)
     throw new Error("Error fetching executor info: " + response.statusText);
   }
 
   const data = await response.json();
-  console.log(data);
-  return data["data"];
+  return { ...data, executor_id: executorId };
 };
 
 const MyPodsDashboard: React.FC = () => {
@@ -109,11 +106,11 @@ const MyPodsDashboard: React.FC = () => {
         <MyPodsCard
           key={index}
           title={`NVIDIA GeForce RTX 4090`}
-          gpuQuantity={executorInfo.gpu_mask.split("").filter((bit) => bit === "1").length}
-          cpuCores={executorInfo.cpu_mask.split("").filter((bit) => bit === "1").length}
-          storage={`${executorInfo.disk}TB+`}
+          gpuQuantity={executorInfo.gpu_mask ? executorInfo.gpu_mask.split("").filter((bit) => bit === "1").length : 0}
+          cpuCores={executorInfo.cpu_mask ? executorInfo.cpu_mask.split("").filter((bit) => bit === "1").length : 0}
           ram={`${Math.floor(executorInfo.dram / (1024*1024*1024))} GB`}
           status={executorInfo.status}
+          executorId={executorInfo.executor_id}
         />
       ))}
       {mutation.isError && <div>{error}</div>}

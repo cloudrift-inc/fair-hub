@@ -1,25 +1,48 @@
 import React, { useState } from 'react';
 import '../app/console.css';
 import MyPodPanel from '../components/MyPodPanel';
+import {useMutation} from "@tanstack/react-query";
+import StopIcon from '@mui/icons-material/Stop';
+import {getFairApiUrl} from "@/lib/faircompute";
 
 interface MyPodsCardProps {
   title: string;
   gpuQuantity: number;
   cpuCores: number;
-  storage: string;
   ram: string;
   status:string;
+  executorId: string;
 }
+
+const stopExecutor = async (executorId: string): Promise<void> => {
+  const apiUrl = getFairApiUrl();
+  const response = await fetch(`${apiUrl}/api/v1/executors/${executorId}/stop`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-API-Key": "debug_api_key",
+      "Authorization": "Bearer " + localStorage.getItem("token")
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(response.statusText);
+  }
+
+  const data = await response.json();
+  return data;
+};
 
 const MyPodsCard: React.FC<MyPodsCardProps> = ({
   title,
   gpuQuantity,
   cpuCores,
-  storage,
   ram,
-  status
+  status,
+  executorId
 }) => {
   const [isPanelOpen, setPanelOpen] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleShowInstructions = () => {
     setPanelOpen(true);
@@ -27,6 +50,23 @@ const MyPodsCard: React.FC<MyPodsCardProps> = ({
 
   const handlePanelClose = () => {
     setPanelOpen(false);
+  };
+
+  const mutation = useMutation<void, Error, string>({
+    mutationFn: stopExecutor,
+    onSuccess: (data) => {
+      console.log("Delete successful:", data);
+      // Store token in localStorage or sessionStorage
+      // Update user context with logged-in user data if needed   
+       },
+      onError: (error) => {
+        setError(error.message);
+        console.error("Error logging in:", error);
+      },
+  });
+
+  const handleStopExecutor = async () => {
+    mutation.mutate(executorId);
   };
 
   return (
@@ -68,22 +108,24 @@ const MyPodsCard: React.FC<MyPodsCardProps> = ({
               <p className="text-gray-400 m-1">CPU Cores</p>
             </div>
           </div>
-          <div className="w-4/5 h-4/5 md:w-[159px] md:h-[58px] bg-[#474747] leading-[15px] p-2 rounded inline-block" style={{ fontSize: "0.75rem" }}>
-            <div>
-              <p className="font-bold m-0">{storage}</p>
-              <p className="text-gray-400 m-1">Storage</p>
-            </div>
-          </div>
+          
         </div>
-        <div className="flex justify-end items-center mt-1">
+        <div className="flex justify-start items-center mt-1">
+        <button
+          className="font-bold text-sm px-0 py-2 rounded hover transition duration-300"
+          style={{ marginRight: "5px" }} // Reduced margin-right
+          onClick={handleStopExecutor}
+        >
+          <StopIcon className='mr-3' />
+        </button>
         <button
           className="font-bold text-[#6495ED] text-sm px-4 py-2 rounded hover transition duration-300"
           style={{ marginRight: "10px" }}
           onClick={handleShowInstructions}
-          >
+        >
           Show Instructions
         </button>
-        </div>
+      </div>
       </div>
       </div>
       {isPanelOpen && (

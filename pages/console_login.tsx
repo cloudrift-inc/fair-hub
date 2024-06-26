@@ -1,7 +1,6 @@
 import type { NextPage } from "next";
 import React, { useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
-import Link from 'next/link'
 import '../app/globals.css';
 import {useMutation} from "@tanstack/react-query";
 import Button from '../components/foundational/Button';
