@@ -9,6 +9,7 @@ interface PricingPlan {
   description: string;
   features: string[];
   buttonLabel: string;
+  link: string;
 }
 
 const pricingPlans: PricingPlan[] = [
@@ -22,6 +23,7 @@ const pricingPlans: PricingPlan[] = [
       "Ideal for moderate AI tasks and data processing",
     ],
     buttonLabel: "Rent a GPU Now",
+    link: "/console",
   },
   {
     id: 2,
@@ -33,6 +35,7 @@ const pricingPlans: PricingPlan[] = [
       "Designed for intensive AI training and high-performance computing",
     ],
     buttonLabel: "Rent a GPU Now",
+    link: "/console",
   },
   {
     id: 3,
@@ -44,6 +47,7 @@ const pricingPlans: PricingPlan[] = [
       "Full customization for unmatched performance requirements",
     ],
     buttonLabel: "Rent a GPU Now",
+    link: "#contactus",
   },
 ];
 
@@ -57,14 +61,13 @@ const Pricing: React.FC = () => {
         </p>
         <div className="flex flex-wrap items-center justify-center gap-8">
           {pricingPlans.map((plan, index) => (
-            <div className={index === 1 ? "rounded-lg bg-white p-[1px]" : ""}>
-              {/* Wrap middle card with a white border */}
+            <div className={index === 1 ? "rounded-lg bg-white p-[1px]" : ""} key={plan.id}>
               <GPURentalCard
-                key={plan.id}
                 name={plan.name}
                 price={plan.price}
                 description={plan.description}
                 features={plan.features}
+                link={plan.link}
               />
             </div>
           ))}
