@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import '../app/console.css';
 import MyPodPanel from '../components/MyPodPanel';
 import {useMutation} from "@tanstack/react-query";
-import StopIcon from '@mui/icons-material/Stop';interface MyPodsCardProps {
+import StopIcon from '@mui/icons-material/Stop';
+import {getFairApiUrl} from "@/lib/faircompute";
+
+interface MyPodsCardProps {
   title: string;
   gpuQuantity: number;
   cpuCores: number;
@@ -11,16 +14,8 @@ import StopIcon from '@mui/icons-material/Stop';interface MyPodsCardProps {
   executorId: string;
 }
 
-const getApiUrl = (): string => {
-  if (process.env.NODE_ENV === "production") {
-    return process.env.REACT_APP_PROD_API_URL || "";
-  } else {
-    return process.env.REACT_APP_LOCAL_API_URL || "";
-  }
-};
-
 const stopExecutor = async (executorId: string): Promise<void> => {
-  const apiUrl = getApiUrl();
+  const apiUrl = getFairApiUrl();
   const response = await fetch(`${apiUrl}/api/v1/executors/${executorId}/stop`, {
     method: "POST",
     headers: {
