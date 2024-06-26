@@ -176,7 +176,7 @@ const ConsoleRenting: NextPage = () => {
               alt=""
               src="/filter-icon.svg"
             />
-          </div> */}
+          </div> 
         </div>
       </div>
     </div>
