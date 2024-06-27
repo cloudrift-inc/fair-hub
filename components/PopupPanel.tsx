@@ -122,8 +122,8 @@ function PopupPanel({isOpen, onClose, gpuName, price, nodeId}: PopupPanelProps) 
         return null;
     }
 
-    if (showMyPodPanel) {
-        return <MyPodPanel isOpen={isOpen} onClose={onClose} />;
+    if (showMyPodPanel && data) {
+        return <MyPodPanel isOpen={isOpen} onClose={onClose} executorId={data.executor_id} />;
     }
 
     if (isRented) {
