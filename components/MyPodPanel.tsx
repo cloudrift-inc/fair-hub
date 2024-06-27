@@ -3,10 +3,11 @@ import '../app/globals.css';
 
 interface MyPodPanelProps {
   isOpen: boolean;
+  executorId: string;
   onClose: () => void;
 }
 
-function MyPodPanel({ isOpen, onClose }: MyPodPanelProps) {
+function MyPodPanel({ isOpen, onClose , executorId}: MyPodPanelProps) {
   const codeSnippetRefs = React.useRef<{ [key: string]: HTMLDivElement | null }>({
     instruction1: null,
     instruction2: null,
@@ -98,7 +99,7 @@ function MyPodPanel({ isOpen, onClose }: MyPodPanelProps) {
             }}
             className="flex-1 p-2  rounded-l-md text-purple-300"
           >
-            fair docker -e &lt;node_id&gt; run alpine echo hello
+            fair docker -e {executorId} run alpine echo hello
           </div>
           <button
             className="px-2 py-1 text-teal-500  rounded-r-md"
@@ -128,7 +129,7 @@ function MyPodPanel({ isOpen, onClose }: MyPodPanelProps) {
             }}
             className="flex-1 p-2 rounded-l-md text-pink-300"
           >
-            fair cluster executors rename &lt;node_id&gt; new_name
+            fair cluster executors rename {executorId} new_name
           </div>
           <button
             className="px-2 py-1 text-teal-500 rounded-r-md"
