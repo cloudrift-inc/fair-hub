@@ -135,7 +135,7 @@ const MyPodsCard: React.FC<MyPodsCardProps> = ({
         <div className="fixed inset-0 z-50 flex items-center justify-center">
           <div className="absolute inset-0 bg-black opacity-50" onClick={handlePanelClose}></div>
           <div className="relative z-10">
-            <MyPodPanel isOpen={isPanelOpen} onClose={handlePanelClose} />
+            <MyPodPanel isOpen={isPanelOpen} onClose={handlePanelClose} executorId={executorId}/>
           </div>
         </div>
       )}
