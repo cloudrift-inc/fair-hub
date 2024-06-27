@@ -2,53 +2,84 @@ import type { NextPage } from "next";
 import React, { useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
 import '../app/globals.css';
-import {useMutation} from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import Button from '../components/foundational/Button';
+import Link from "../components/foundational/Link";
 import GPUInfoDashboard from '../components/GPUInfoDashboard';
 import SidebarMyPods from '../components/SideBarMyPods';
 import { useRouter } from 'next/router';
 import LogoutIcon from '@mui/icons-material/Logout';
-import {fetchProfile, ProfileData} from "../components/ProfileFetch";
+import { fetchProfile, ProfileData } from "../components/ProfileFetch";
+import { fetchBalance, BalanceData } from "../components/BalanceFetch";
 
 const LogoutButton = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const router = useRouter();
   const [open, setOpen] = useState(true);
-    const [error, setError] = useState<string>("");
-    const [profile, setProfile] = useState<ProfileData | null>(null);
-    const fetchProfileData = async (token: string): Promise<ProfileData> => {
-        try {
-            return await fetchProfile(token);
-        } catch (error: any) {
-            throw new Error(`${error.message}`);
-        }
-    };
-    const mutation = useMutation<ProfileData, Error, string>({
-        mutationFn: fetchProfileData,
-        onSuccess: (data) => {
-            console.log("Profile fetched successfully:", data);
-            setProfile(data);
-        },
-        onError: (error) => {
-            setError(error.message);
-            console.error("Error fetching profile:", error);
-        },
-    });
+  const [error, setError] = useState<string>("");
+  const [profile, setProfile] = useState<ProfileData | null>(null);
+  const [balance, setBalance] = useState<BalanceData | null>(null);
 
-    useEffect(() => {
-        const token = localStorage.getItem("token") || "";
-        if (token) {
-            mutation.mutate(token);
-        } else {
-            console.error("No auth token found");
-            setError("Please Log In to access this page.");
-        }
-    }, []);
-
-
-    if (error) {
-        return <div>Error: {error}</div>;
+  const fetchProfileData = async (token: string): Promise<ProfileData> => {
+    try {
+      return await fetchProfile(token);
+    } catch (error: any) {
+      throw new Error(`${error.message}`);
     }
+  };
+
+  const fetchBalanceData = async (token: string): Promise<BalanceData> => {
+    try {
+      return await fetchBalance(token);
+    } catch (error: any) {
+      throw new Error(`${error.message}`);
+    }
+  };
+
+  const profileMutation = useMutation<ProfileData, Error, string>({
+    mutationFn: fetchProfileData,
+    onSuccess: (data) => {
+      console.log("Profile fetched successfully:", data);
+      setProfile(data);
+    },
+    onError: (error) => {
+      setError(error.message);
+      console.error("Error fetching profile:", error);
+    },
+  });
+
+  const balanceMutation = useMutation<BalanceData, Error, string>({
+    mutationFn: fetchBalanceData,
+    onSuccess: (data) => {
+      console.log("Balance fetched successfully:", data);
+      setBalance(data);
+    },
+    onError: (error) => {
+      setError(error.message);
+      console.error("Error fetching balance:", error);
+    },
+  });
+
+  useEffect(() => {
+    const token = localStorage.getItem("token") || "";
+    if (token) {
+      profileMutation.mutate(token);
+      balanceMutation.mutate(token);
+
+      const interval = setInterval(() => {
+        balanceMutation.mutate(token);
+      }, 3000);
+
+      return () => clearInterval(interval);
+    } else {
+      console.error("No auth token found");
+      setError("Please Log In to access this page.");
+    }
+  }, []);
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   const handleButtonClick = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -71,8 +102,7 @@ const LogoutButton = () => {
           <div className="rounded-radius-8 flex flex-row flex-wrap items-center justify-start py-0 pr-[5px] pl-0">
             <div className="rounded-radius-8 flex flex-col items-start justify-center">
               <a className="[text-decoration:none] relative leading-[20px] font-medium text-[inherit] inline-block min-w-[78px]">
-              {profile ? profile.name : "" || "Username"}
-
+                {profile ? profile.name : "" || "Username"}
               </a>
             </div>
             <div className="rounded-radius-8 flex flex-row items-center justify-center p-[5px] ml-[2px]">
@@ -114,8 +144,23 @@ const ConsoleRenting: NextPage = () => {
   }, []);
 
   useEffect(() => {
-    // Fetch available credit from an API or another source
-    setCredit(100); // Set this to the actual value fetched from an API
+    const token = localStorage.getItem("token") || "";
+    if (token) {
+      const fetchAndSetBalance = async () => {
+        try {
+          const data = await fetchBalance(token);
+          setCredit(data.balance / 100);
+        } catch (error) {
+          console.error("Error fetching balance:", error);
+        }
+      };
+
+      fetchAndSetBalance();
+
+      const interval = setInterval(fetchAndSetBalance, 3000);
+
+      return () => clearInterval(interval);
+    }
   }, []);
 
   useEffect(() => {
@@ -131,12 +176,14 @@ const ConsoleRenting: NextPage = () => {
         GPU Search Console
       </b>
       <div className="absolute top-[109px] md:right-[15px] right-[95px] text-sm inline-block">
-        <div className="rounded-full bg-[#191970] py-2 px-2.5 font-bold text-sm">
-          Add Credits
-        </div>
+  <Link href="/billing">
+    <Button className="rounded-full bg-[#191970] py-2 px-4 font-bold text-sm">
+      Add Credits
+    </Button>
+  </Link>
       </div>
       <div className="flex flex-row">
-        <div className=" border-gray-100">
+        <div className="border-gray-100">
           <nav>
             <SidebarMyPods />
           </nav>
@@ -166,8 +213,6 @@ const ConsoleRenting: NextPage = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          
-
           <div className="absolute md:top-[172px] top-[232px] left-[205px] md:left-[305px] w-[130px] h-10">
             <Button className="w-26 md:w-full h-full rounded-lg bg-[#292929] flex items-center px-4">
               <div className="w-26 md:w-full text-left font-medium">Filter by</div>
