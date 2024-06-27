@@ -27,6 +27,9 @@ interface PopupPanelProps {
     gpuName: string;
     price: string;
     nodeId: string; 
+    gpus:number;
+    cpucores:number;
+    dram:number;
 }
 
 const createExecutor = async (requestData: RequestData) => {
@@ -60,10 +63,10 @@ const useCreateExecutor = () => {
     });
 };
 
-function PopupPanel({isOpen, onClose, gpuName, price, nodeId}: PopupPanelProps) {
-    const [gpuQuantity, setGpuQuantity] = React.useState(0);
-    const [gpuCores, setGpuCores] = React.useState(0);
-    const [ram, setRam] = React.useState(0);
+function PopupPanel({isOpen, onClose, gpuName, price, nodeId, gpus, cpucores, dram }: PopupPanelProps) {
+    const [gpuQuantity, setGpuQuantity] = React.useState(1);
+    const [gpuCores, setGpuCores] = React.useState(Math.floor(cpucores/3));
+    const [ram, setRam] = React.useState(Math.floor(dram/cpucores));
     const [showMyPodPanel, setShowMyPodPanel] = React.useState(false);
     const [isRented, setIsRented] = React.useState(false);
     const {mutate, isPending, isError, data} = useCreateExecutor();
@@ -188,22 +191,23 @@ function PopupPanel({isOpen, onClose, gpuName, price, nodeId}: PopupPanelProps) 
             </div>
 
             <div className="flex flex-col w-full space-y-4 ">
-                <div className="px-4 py-2 bg-[#292929] rounded-lg">
-                    <p className="mb-2 text-xs text-white">Choose GPU Quantity</p>
-                    <div className="flex items-center justify-between p-1 bg-neutral-800 rounded-md">
-                        <input
-                            type="range"
-                            min="0"
-                            max="10"
-                            step="1"
-                            value={gpuQuantity}
-                            onChange={(e) => setGpuQuantity(Number(e.target.value))}
-                            className="w-full h-2 bg-neutral-700 rounded-lg appearance-none cursor-pointer accent-[#191970]"
-                        />
-                        <span className="ml-4 text-white">{gpuQuantity}</span>
+            {gpuName!="None" && (
+                    <div className="px-4 py-2 bg-[#292929] rounded-lg">
+                        <p className="mb-2 text-xs text-white">Choose GPU Quantity</p>
+                        <div className="flex items-center justify-between p-1 bg-neutral-800 rounded-md">
+                            <input
+                                type="range"
+                                min="0"
+                                max={gpus}
+                                step="1"
+                                value={gpuQuantity}
+                                onChange={(e) => setGpuQuantity(Number(e.target.value))}
+                                className="w-full h-2 bg-neutral-700 rounded-lg appearance-none cursor-pointer accent-[#191970]"
+                            />
+                            <span className="ml-4 text-white">{gpuQuantity}</span>
+                        </div>
                     </div>
-   
-                </div>
+                )}
 
                 <div className="px-3 py-1 bg-[#292929] rounded-lg">
                     <p className="mb-2 text-xs text-white">Choose CPU Cores</p>
@@ -211,7 +215,7 @@ function PopupPanel({isOpen, onClose, gpuName, price, nodeId}: PopupPanelProps) 
                         <input
                             type="range"
                             min="0"
-                            max="10"
+                            max={cpucores}
                             step="1"
                             value={gpuCores}
                             onChange={(e) => setGpuCores(Number(e.target.value))}
@@ -227,14 +231,14 @@ function PopupPanel({isOpen, onClose, gpuName, price, nodeId}: PopupPanelProps) 
                         <input
                             type="number"
                             min="0"
-                            max="62"
+                            max={dram}
                             value={ram}
                             onChange={(e) => setRam(Number(e.target.value))}
                             className="w-full px-2 py-1 text-white bg-transparent outline-none hover:border hover:border-white"
                         />
                         <p className="text-sm text-zinc-400">GB</p>
                     </div>
-                    <p className="mt-1 text-xs text-zinc-400">Limited up to 62 GB</p>
+                    <p className="mt-1 text-xs text-zinc-400">Limited up to {dram} GB</p>
                 </div>
 
             </div>
