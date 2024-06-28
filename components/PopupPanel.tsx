@@ -74,12 +74,12 @@ function PopupPanel({isOpen, onClose, gpuName, price, nodeId, gpus, cpucores, dr
     const router = useRouter();
 
     React.useEffect(() => {
-        let calculateCpuCores = gpuQuantity * 16;
-        let calculateRam = gpuQuantity * 48;
+        let calculateCpuCores = Math.floor((gpuQuantity * cpucores)/gpus);
+        let calculateRam = Math.floor((gpuQuantity * dram)/gpus);
 
         if (gpuQuantity === 0 || gpus==0) {
             calculateCpuCores = cpuCores; // CPU cores can be directly set by the user when GPUs are 0
-            calculateRam = cpuCores * 3; // Linear scaling based on the max values provided (196 GB for 64 cores)
+            calculateRam = Math.floor((cpuCores * dram)/cpucores); // Linear scaling based on the max values provided (196 GB for 64 cores)
         }
         
         setGpuCores(calculateCpuCores > cpucores ? cpucores : calculateCpuCores);
