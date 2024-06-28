@@ -4,7 +4,13 @@ import {useMutation} from '@tanstack/react-query';
 import '../app/globals.css';
 import { useRouter } from 'next/router';
 import MyPodPanel from './MyPodPanel'; // Adjust the import path if necessary
-import {FAIR_API_VERSION, getFairProviderPubApiKey, getFairApiUrl} from '@/lib/faircompute';
+import {
+    FAIR_API_VERSION,
+    getFairProviderPubApiKey,
+    getFairApiUrl,
+    getFairProviderName,
+    getFairInstanceTypeName
+} from '@/lib/faircompute';
 
 interface RequestData {
     node_id: string;
@@ -95,8 +101,8 @@ function PopupPanel({isOpen, onClose, gpuName, price, nodeId, gpus, cpucores, dr
             dram: ram *(1024* 1024* 1024),
             disk: 0,
             auto_deactivate: false,
-            provider_name: "test_provider",
-            instance_type_name: "test_instance",
+            provider_name: getFairProviderName(),
+            instance_type_name: getFairInstanceTypeName(),
 
         };
         mutate(requestData);
