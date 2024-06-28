@@ -1,6 +1,9 @@
 import type { NextPage } from "next";
 import React, { useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
+import Button from '../components/foundational/Button';
+import Link from "../components/foundational/Link";
+
 import '../app/globals.css';
 import MyPodsDashboard from '../components/MyPodsDashboard';
 import SidebarMyPods from '../components/SideBarMyPods';
@@ -10,7 +13,6 @@ import {fetchProfile, ProfileData} from "../components/ProfileFetch";
 import { fetchBalance, BalanceData } from "../components/BalanceFetch";
 
 import {useMutation} from "@tanstack/react-query";
-import Button from '../components/foundational/Button';
 
 const LogoutButton = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -34,7 +36,7 @@ const LogoutButton = () => {
       throw new Error(`${error.message}`);
     }
   };
-  
+
   const handleButtonClick = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
@@ -175,9 +177,11 @@ const ConsoleRenting: NextPage = () => {
         My Pods
       </b>
       <div className="absolute top-[109px] md:right-[15px] right-[95px] text-sm inline-block">
-        <div className="rounded-full bg-[#191970] py-2 px-2.5 font-bold text-sm">
-          Add Credits
-        </div>
+  <Link href="/billing">
+    <Button className="rounded-full bg-[#191970] py-2 px-4 font-bold text-sm">
+      Add Credits
+    </Button>
+  </Link>
       </div>
       <div className="flex flex-row">
         <div className=" border-gray-100">
