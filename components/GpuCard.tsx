@@ -7,7 +7,7 @@ interface GpuCardProps {
   title: string;
   gpuQuantity: number;
   cpuCores: number;
-  ram: string;
+  ram: number;
   price: string;
   nodeId: string;
   currentPage: string;
@@ -77,7 +77,7 @@ const GpuCard: React.FC<GpuCardProps> = ({
                             className="w-4/5 h-4/5  md:w-[159px] md:h-[58px] bg-[#474747] leading-[15px] p-2 rounded inline-block"
                             style={{fontSize: "0.75rem"}}>
                             <div>
-                                <p className="font-bold m-0">{ram}</p>
+                                <p className="font-bold m-0">{ram} GB</p>
                                 <p className="text-gray-400 m-1">RAM</p>
                             </div>
                         </div>
@@ -102,7 +102,9 @@ const GpuCard: React.FC<GpuCardProps> = ({
         <div className="fixed inset-0 z-50 flex items-center justify-center">
           <div className="absolute inset-0 bg-black opacity-50" onClick={handlePanelClose}></div>
           <div className="relative z-10">
-            <PopupPanel isOpen={isPanelOpen} onClose={handlePanelClose} gpuName={title} price={price} nodeId={nodeId}/>
+            <PopupPanel isOpen={isPanelOpen} onClose={handlePanelClose} gpuName={title} price={price} nodeId={nodeId}
+            gpus={gpuQuantity} cpucores={cpuCores} dram={ram}
+            />
           </div>
         </div>
       )}

@@ -27,6 +27,9 @@ interface PopupPanelProps {
     gpuName: string;
     price: string;
     nodeId: string; 
+    gpus:number;
+    cpucores:number;
+    dram:number;
 }
 
 const createExecutor = async (requestData: RequestData) => {
@@ -60,9 +63,9 @@ const useCreateExecutor = () => {
     });
 };
 
-function PopupPanel({isOpen, onClose, gpuName, price, nodeId}: PopupPanelProps) {
-    const [gpuQuantity, setGpuQuantity] = React.useState(0);
-    const [gpuCores, setGpuCores] = React.useState(0);
+function PopupPanel({isOpen, onClose, gpuName, price, nodeId, gpus, cpucores, dram }: PopupPanelProps) {
+    const [gpuQuantity, setGpuQuantity] = React.useState(1);
+    const [cpuCores, setGpuCores] = React.useState(3);
     const [ram, setRam] = React.useState(0);
     const [showMyPodPanel, setShowMyPodPanel] = React.useState(false);
     const [isRented, setIsRented] = React.useState(false);
@@ -70,22 +73,20 @@ function PopupPanel({isOpen, onClose, gpuName, price, nodeId}: PopupPanelProps) 
     const [formError, setFormError] = React.useState('');
     const router = useRouter();
 
-    const handleSubmit = () => {
-        // if (gpuQuantity === 0) {
-        //     setFormError('Please select a GPU quantity');
-        //     return;
-        // }
-        if (gpuCores === 0) {
-            setFormError('Please select the number of GPU cores');
-            return;
-        }
-        if (ram === 0) {
-            setFormError('Please enter the required RAM');
-            return;
+    React.useEffect(() => {
+        let calculateCpuCores = Math.floor((gpuQuantity * cpucores)/gpus);
+        let calculateRam = Math.floor((gpuQuantity * dram)/gpus);
+
+        if (gpuQuantity === 0 || gpus==0) {
+            calculateCpuCores = cpuCores; // CPU cores can be directly set by the user when GPUs are 0
+            calculateRam = Math.floor((cpuCores * dram)/cpucores); // Linear scaling based on the max values provided (196 GB for 64 cores)
         }
         
+        setGpuCores(calculateCpuCores > cpucores ? cpucores : calculateCpuCores);
+        setRam(calculateRam > dram ? dram : calculateRam);
+    }, [gpuQuantity, cpuCores, cpucores]);
 
-        setFormError('');
+    const handleSubmit = () => {
 
         const requestData: RequestData = {
             node_id: nodeId,
@@ -188,59 +189,71 @@ function PopupPanel({isOpen, onClose, gpuName, price, nodeId}: PopupPanelProps) 
             </div>
 
             <div className="flex flex-col w-full space-y-4 ">
-                <div className="px-4 py-2 bg-[#292929] rounded-lg">
-                    <p className="mb-2 text-xs text-white">Choose GPU Quantity</p>
-                    <div className="flex items-center justify-between p-1 bg-neutral-800 rounded-md">
-                        <input
-                            type="range"
-                            min="0"
-                            max="10"
-                            step="1"
-                            value={gpuQuantity}
-                            onChange={(e) => setGpuQuantity(Number(e.target.value))}
-                            className="w-full h-2 bg-neutral-700 rounded-lg appearance-none cursor-pointer accent-[#191970]"
-                        />
-                        <span className="ml-4 text-white">{gpuQuantity}</span>
+            {gpuName!="None" && (
+                    <div className="px-4 py-2 bg-[#292929] rounded-lg">
+                        <p className="mb-2 text-xs text-white">Choose GPU Quantity</p>
+                        <div className="flex items-center justify-between p-1 bg-neutral-800 rounded-md">
+                            <input
+                                type="range"
+                                min="0"
+                                max={gpus}
+                                step="1"
+                                value={gpuQuantity}
+                                onChange={(e) => setGpuQuantity(Number(e.target.value))}
+                                className="w-full h-2 bg-neutral-700 rounded-lg appearance-none cursor-pointer accent-[#191970]"
+                            />
+                            <span className="ml-4 text-white">{gpuQuantity}</span>
+                        </div>
                     </div>
-   
-                </div>
-
-                <div className="px-3 py-1 bg-[#292929] rounded-lg">
+                )}
+            {gpuName === "None" && (
+                    <div className="px-3 py-2 bg-[#292929] rounded-lg">
+                        <p className="mb-2 text-xs text-white">Choose CPU Cores</p>
+                        <div className="flex items-center justify-between p-2 bg-neutral-800 rounded-md">
+                            <input
+                                type="range"
+                                min="0"
+                                max={cpucores}
+                                step="1"
+                                value={cpuCores}
+                                onChange={(e) => setGpuCores(Number(e.target.value))}
+                                className="w-full h-2 bg-neutral-700 rounded-lg appearance-none cursor-pointer accent-[#191970]"
+                            />
+                            <span className="ml-4 text-white">{cpuCores}</span>
+                        </div>
+                    </div>
+                )}
+                {gpuName!="None" && (<div className="px-3 py-2 bg-[#292929] rounded-lg">
                     <p className="mb-2 text-xs text-white">Choose CPU Cores</p>
                     <div className="flex items-center justify-between p-2 bg-neutral-800 rounded-md">
                         <input
                             type="range"
                             min="0"
-                            max="10"
-                            step="1"
-                            value={gpuCores}
-                            onChange={(e) => setGpuCores(Number(e.target.value))}
-                            className="w-full h-2 bg-neutral-700 rounded-lg appearance-none cursor-pointer accent-[#191970]"
+                            max={cpucores}
+                            value={cpuCores}
+                            readOnly
+                            className="w-full h-2 bg-neutral-700 rounded-lg appearance-none accent-[#191970]"
                         />
-                        <span className="ml-4 text-white">{gpuCores}</span>
+                        <span className="ml-4 text-white">{cpuCores}</span>
                     </div>
                 </div>
+                )}
 
-                <div className="px-3 py-1 bg-[#292929] rounded-lg">
+                <div className="px-3 py-2 bg-[#292929] rounded-lg">
                     <p className="mb-2 text-xs text-white">Enter Required RAM</p>
                     <div className="flex items-center justify-between p-2 bg-neutral-800 rounded-md">
                         <input
                             type="number"
-                            min="0"
-                            max="62"
                             value={ram}
-                            onChange={(e) => setRam(Number(e.target.value))}
-                            className="w-full px-2 py-1 text-white bg-transparent outline-none hover:border hover:border-white"
+                            readOnly
+                            className="w-full px-2 py-1 text-white bg-transparent outline-none "
                         />
                         <p className="text-sm text-zinc-400">GB</p>
                     </div>
-                    <p className="mt-1 text-xs text-zinc-400">Limited up to 62 GB</p>
                 </div>
 
             </div>
-            {formError && (
-                <p className="mt-4 text-red-500">{formError}</p>
-            )}
+            
             <div className="flex justify-end w-full gap-4 px-3 py-6 mt-auto max-md:flex-col max-md:items-stretch">
                 <button
                     className="px-6 py-2 text-sm font-medium text-white bg-neutral-800 border border-zinc-500 rounded-lg"
