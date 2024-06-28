@@ -96,7 +96,7 @@ const GPUInfoDashboard: React.FC<GPUInfoDashboardProps> = ({ currentPage }) => {
                         instance: nodeInfo.instance || {
                             provider: "Unknown",
                             instance_type: "Unknown",
-                            cost_per_hour: 1000,
+                            cost_per_hour: 10,
                         },
                         nodeId: data.nodes[index],
                         dram: Math.floor(nodeInfo.dram / (1024 * 1024 * 1024)),
