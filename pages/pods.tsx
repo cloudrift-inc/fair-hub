@@ -1,27 +1,41 @@
 import type { NextPage } from "next";
 import React, { useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
+import Button from '../components/foundational/Button';
+import Link from "../components/foundational/Link";
+
 import '../app/globals.css';
 import MyPodsDashboard from '../components/MyPodsDashboard';
 import SidebarMyPods from '../components/SideBarMyPods';
 import { useRouter } from 'next/router';
 import LogoutIcon from '@mui/icons-material/Logout';
 import {fetchProfile, ProfileData} from "../components/ProfileFetch";
+import { fetchBalance, BalanceData } from "../components/BalanceFetch";
+
 import {useMutation} from "@tanstack/react-query";
-import Button from '../components/foundational/Button';
 
 const LogoutButton = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const router = useRouter();
   const [error, setError] = useState<string>("");
   const [profile, setProfile] = useState<ProfileData | null>(null);
-    const fetchProfileData = async (token: string): Promise<ProfileData> => {
-        try {
-            return await fetchProfile(token);
-        } catch (error: any) {
-            throw new Error(`${error.message}`);
-        }
-    };
+  const [balance, setBalance] = useState<BalanceData | null>(null);
+
+  const fetchProfileData = async (token: string): Promise<ProfileData> => {
+    try {
+      return await fetchProfile(token);
+    } catch (error: any) {
+      throw new Error(`${error.message}`);
+    }
+  };
+
+  const fetchBalanceData = async (token: string): Promise<BalanceData> => {
+    try {
+      return await fetchBalance(token);
+    } catch (error: any) {
+      throw new Error(`${error.message}`);
+    }
+  };
 
   const handleButtonClick = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -34,28 +48,46 @@ const LogoutButton = () => {
     router.push('/console');
   };
 
-  const mutation = useMutation<ProfileData, Error, string>({
+  const profileMutation = useMutation<ProfileData, Error, string>({
     mutationFn: fetchProfileData,
     onSuccess: (data) => {
-        console.log("Profile fetched successfully:", data);
-        setProfile(data);
+      console.log("Profile fetched successfully:", data);
+      setProfile(data);
     },
     onError: (error) => {
-        setError(error.message);
-        console.error("Error fetching profile:", error);
+      setError(error.message);
+      console.error("Error fetching profile:", error);
     },
-});
+  });
 
-    useEffect(() => {
-        const token = localStorage.getItem("token") || "";
-        if (token) {
-            mutation.mutate(token);
-        } else {
-            console.error("No auth token found");
-            setError("Please Log In to access this page.");
-        }
-    }, []);
+  const balanceMutation = useMutation<BalanceData, Error, string>({
+    mutationFn: fetchBalanceData,
+    onSuccess: (data) => {
+      console.log("Balance fetched successfully:", data);
+      setBalance(data);
+    },
+    onError: (error) => {
+      setError(error.message);
+      console.error("Error fetching balance:", error);
+    },
+  });
 
+  useEffect(() => {
+    const token = localStorage.getItem("token") || "";
+    if (token) {
+      profileMutation.mutate(token);
+      balanceMutation.mutate(token);
+
+      const interval = setInterval(() => {
+        balanceMutation.mutate(token);
+      }, 3000);
+
+      return () => clearInterval(interval);
+    } else {
+      console.error("No auth token found");
+      setError("Please Log In to access this page.");
+    }
+  }, []);
 
     if (error) {
         return <div>Error: {error}</div>;
@@ -113,8 +145,23 @@ const ConsoleRenting: NextPage = () => {
   }, []);
 
   useEffect(() => {
-    // Fetch available credit from an API or another source
-    setCredit(100); // Set this to the actual value fetched from an API
+    const token = localStorage.getItem("token") || "";
+    if (token) {
+      const fetchAndSetBalance = async () => {
+        try {
+          const data = await fetchBalance(token);
+          setCredit(data.balance / 100);
+        } catch (error) {
+          console.error("Error fetching balance:", error);
+        }
+      };
+
+      fetchAndSetBalance();
+
+      const interval = setInterval(fetchAndSetBalance, 3000);
+
+      return () => clearInterval(interval);
+    }
   }, []);
 
   useEffect(() => {
@@ -130,9 +177,11 @@ const ConsoleRenting: NextPage = () => {
         My Pods
       </b>
       <div className="absolute top-[109px] md:right-[15px] right-[95px] text-sm inline-block">
-        <div className="rounded-full bg-[#191970] py-2 px-2.5 font-bold text-sm">
-          Add Credits
-        </div>
+  <Link href="/billing">
+    <Button className="rounded-full bg-[#191970] py-2 px-4 font-bold text-sm">
+      Add Credits
+    </Button>
+  </Link>
       </div>
       <div className="flex flex-row">
         <div className=" border-gray-100">
