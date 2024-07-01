@@ -57,7 +57,7 @@ const fetchExecutorInfo = async (executorId: string): Promise<ExecutorInfoRespon
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "X-API-Key": "debug_api_key",
+      "X-API-Key": getFairProviderPubApiKey(),
       "Authorization": "Bearer " + localStorage.getItem("token")
 },
   });

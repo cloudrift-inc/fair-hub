@@ -30,4 +30,20 @@ export function getStripeSecretKey() : string {
     }
 }
 
+export function getFairProviderName() : string {
+    if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'production') {
+        return "NeuralRack";
+    } else {
+        return "test_provider";
+    }
+}
+
+export function getFairInstanceTypeName() : string {
+    if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'production') {
+        return "Pro";
+    } else {
+        return "test_instance";
+    }
+}
+
 export const FAIR_API_VERSION = "2024-06-17";
