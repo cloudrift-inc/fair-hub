@@ -19,8 +19,8 @@ const Footer = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-   const apiKey = process.env.NEXT_PUBLIC_OMNISEND_API_KEY;
-   
+   const apiKey = process.env.OMNISEND_API_KEY;
+
     if (!apiKey) {
       setErrorMessage("Omnisend API key not found in environment variables");
       return;
