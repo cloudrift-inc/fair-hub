@@ -29,7 +29,12 @@ export function getStripeSecretKey() : string {
         return process.env.LOCAL_STRIPE_SECRET_KEY || '';
     }
 }
+export function getOmnisendAPIkey(): string {
+    return process.env.NEXT_PUBLIC_OMNISEND_API_KEY || '';
 
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 export function getFairProviderName() : string {
     if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'production') {
         return "NeuralRack";
@@ -46,4 +51,16 @@ export function getFairInstanceTypeName() : string {
     }
 }
 
+=======
+
+}
+>>>>>>> Stashed changes
+=======
+
+}
+>>>>>>> Stashed changes
+=======
+
+}
+>>>>>>> Stashed changes
 export const FAIR_API_VERSION = "2024-06-17";
