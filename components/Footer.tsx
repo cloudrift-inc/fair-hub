@@ -19,13 +19,18 @@ const Footer = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-
+   const apiKey = process.env.NEXT_PUBLIC_OMNISEND_API_KEY;
+   
+    if (!apiKey) {
+      setErrorMessage("Omnisend API key not found in environment variables");
+      return;
+    }
     const options = {
       method: 'POST',
       headers: {
         accept: 'application/json',
         'content-type': 'application/json',
-        'X-API-KEY': '6441e7b4a28cdc684ee4b438-u88LjqLhlOEsMXcYTezm1g8uenQT4zGULZ2Qe27IyoLok9YIh5'
+        'X-API-KEY': apiKey,
       },
       body: JSON.stringify({
         customProperties: { message: formData.message },
@@ -43,6 +48,7 @@ const Footer = () => {
     };
 
     try {
+
       const response = await fetch('https://api.omnisend.com/v5/contacts', options);
       if (response.ok) {
         const result = await response.json();
