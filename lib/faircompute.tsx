@@ -1,4 +1,4 @@
-export function getFairApiUrl() : string {
+export function getFairApiUrl(): string {
     if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'production') {
         return process.env.NEXT_PUBLIC_PROD_FAIR_API_URL || '';
     } else {
@@ -6,7 +6,7 @@ export function getFairApiUrl() : string {
     }
 }
 
-export function getFairProviderPubApiKey() : string {
+export function getFairProviderPubApiKey(): string {
     if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'production') {
         return process.env.NEXT_PUBLIC_PROD_FAIR_PROVIDER_PUB_KEY || '';
     } else {
@@ -14,7 +14,7 @@ export function getFairProviderPubApiKey() : string {
     }
 }
 
-export function getStripePublishableKey() : string {
+export function getStripePublishableKey(): string {
     if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'production') {
         return process.env.NEXT_PUBLIC_PROD_STRIPE_PUBLISHABLE_KEY || '';
     } else {
@@ -22,20 +22,19 @@ export function getStripePublishableKey() : string {
     }
 }
 
-export function getStripeSecretKey() : string {
+export function getStripeSecretKey(): string {
     if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'production') {
         return process.env.PROD_STRIPE_SECRET_KEY || '';
     } else {
         return process.env.LOCAL_STRIPE_SECRET_KEY || '';
     }
 }
-export function getOmnisendAPIkey(): string {
-    return process.env.NEXT_PUBLIC_OMNISEND_API_KEY || '';
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-export function getFairProviderName() : string {
+export function getOmnisendApiKey(): string {
+    return process.env.NEXT_PUBLIC_OMNISEND_API_KEY || '';
+}
+
+export function getFairProviderName(): string {
     if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'production') {
         return "NeuralRack";
     } else {
@@ -43,7 +42,7 @@ export function getFairProviderName() : string {
     }
 }
 
-export function getFairInstanceTypeName() : string {
+export function getFairInstanceTypeName(): string {
     if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'production') {
         return "Pro";
     } else {
@@ -51,16 +50,4 @@ export function getFairInstanceTypeName() : string {
     }
 }
 
-=======
-
-}
->>>>>>> Stashed changes
-=======
-
-}
->>>>>>> Stashed changes
-=======
-
-}
->>>>>>> Stashed changes
 export const FAIR_API_VERSION = "2024-06-17";

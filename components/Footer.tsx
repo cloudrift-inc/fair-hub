@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Button from "./foundational/Button";
 import Link from "./foundational/Link";
-import { getOmnisendAPIkey } from "../lib/faircompute";
+import { getOmnisendApiKey } from "../lib/faircompute";
 
 
 const Footer = () => {
@@ -22,7 +22,7 @@ const Footer = () => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    const apiKey = getOmnisendAPIkey();
+    const apiKey = getOmnisendApiKey();
 
     if (!apiKey) {
       setErrorMessage("Omnisend API key not found in environment variables");
