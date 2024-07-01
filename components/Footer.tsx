@@ -19,7 +19,8 @@ const Footer = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-   const apiKey = process.env.OMNISEND_API_KEY;
+
+    const apiKey = process.env.OMNISEND_API_KEY;
 
     if (!apiKey) {
       setErrorMessage("Omnisend API key not found in environment variables");
@@ -34,7 +35,6 @@ const Footer = () => {
       },
       body: JSON.stringify({
         customProperties: { message: formData.message },
-        country: 'f',
         firstName: formData.name,
         tags: ['neuralrack'],
         identifiers: [
