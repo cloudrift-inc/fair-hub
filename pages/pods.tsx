@@ -188,7 +188,7 @@ const ConsoleRenting: NextPage = () => {
           <nav>
             <SidebarMyPods />
           </nav>
-          <div className="relative pt-10 sm:pt-40 mt-10 md:ml-[284px] md:mt-12 ">
+          <div className="relative pt-10 sm:pt-40 mt-10 md:ml-[284px] md:mt-3">
             <MyPodsDashboard />
           </div>
           <div className="absolute top-0 left-full h-full w-px bg-gray-300"></div>
@@ -204,7 +204,7 @@ const ConsoleRenting: NextPage = () => {
               <LogoutButton />
             </div>
           </div>
-          <div className="w-3/6 md:w-56 absolute right-[23px] md:right-[25px] top-[172px] rounded-lg bg-[#292929] h-10 flex items-center gap-4 px-4">
+          {/* <div className="w-3/6 md:w-56 absolute right-[23px] md:right-[25px] top-[172px] rounded-lg bg-[#292929] h-10 flex items-center gap-4 px-4">
             <img className="w-4 h-4" alt="" src="/vector.svg" />
             <input
               type="text"
@@ -213,10 +213,10 @@ const ConsoleRenting: NextPage = () => {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-          </div>
+          </div> */}
           
         {/* Add more GpuCard components as needed */}
-          <div className="absolute md:top-[172px] top-[232px] left-[205px] md:left-[305px] w-[130px] h-10">
+          {/* <div className="absolute md:top-[172px] top-[232px] left-[205px] md:left-[305px] w-[130px] h-10">
             <Button className="w-26 md:w-full h-full rounded-lg bg-[#292929] flex items-center px-4">
               <div className="w-26 md:w-full text-left font-medium">Filter by</div>
             </Button>
@@ -225,7 +225,7 @@ const ConsoleRenting: NextPage = () => {
               alt=""
               src="/filter-icon.svg"
             />
-          </div> 
+          </div>  */}
         </div>
       </div>
     </div>
