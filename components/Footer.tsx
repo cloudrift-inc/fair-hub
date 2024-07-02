@@ -1,14 +1,83 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Button from "./foundational/Button";
 import Link from "./foundational/Link";
+import { getOmnisendApiKey } from "../lib/faircompute";
+
 
 const Footer = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const handleChange = (e: any) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+
+    const apiKey = getOmnisendApiKey();
+
+    if (!apiKey) {
+      setErrorMessage("Omnisend API key not found in environment variables");
+      return;
+    }
+    const options = {
+      method: 'POST',
+      headers: {
+        accept: 'application/json',
+        'content-type': 'application/json',
+        'X-API-KEY': apiKey,
+      },
+      body: JSON.stringify({
+        customProperties: { message: formData.message },
+        firstName: formData.name,
+        tags: ['neuralrack'],
+        identifiers: [
+          {
+            channels: { email: { status: 'nonSubscribed' } },
+            type: 'email',
+            id: formData.email
+          }
+        ]
+      })
+    };
+
+    try {
+
+      const response = await fetch('https://api.omnisend.com/v5/contacts', options);
+      if (response.ok) {
+        const result = await response.json();
+        console.log(result);
+        setSuccessMessage('Message has been sent. We will contact you soon.');
+        setErrorMessage(''); 
+        setFormData({
+          name: '',
+          email: '',
+          message: ''
+        });
+      } else {
+        setErrorMessage('Failed to send message. Please try again later.');
+        setSuccessMessage(''); 
+      }
+    } catch (err) {
+      console.error(err);
+      setErrorMessage('An error occurred. Please try again later.');
+      setSuccessMessage(''); 
+    }
+  };
+
   return (
     <div className="flex min-h-screen w-full flex-col bg-linear-gradient text-white" id="contactus">
       <div className="flex flex-1 flex-col space-y-8 px-4 py-8 md:flex-row md:space-y-0">
         {/* Left Section */}
-        <div className="flex flex-1 flex-col space-y-12 px-4 md:ml-24 md:items-start md:justify-center md:px-12">
+        <div className="flex flex-1 flex-col space-y-12 px-4 md:ml-24 lg:ml-[300px] md:items-start md:justify-center md:px-12">
           <div className="space-y-8">
             <h2 className="text-4xl font-bold leading-[1.25] md:text-6xl">
               Let's Talk
@@ -35,24 +104,30 @@ const Footer = () => {
         </div>
 
         {/* Right Section */}
-        <div className="flex flex-1 items-center justify-center md:px-12">
-          <form className="w-full max-w-md space-y-4">
+        <div className="flex flex-1 items-center justify-center md:mr-20 md:px-12 md:pt-20">
+          <form className="w-full max-w-md space-y-4" onSubmit={handleSubmit}>
             <div className="flex flex-col space-y-4">
               <h3 className="text-sm">Name</h3>
               <input
                 type="text"
                 name="name"
+                value={formData.name}
+                onChange={handleChange}
                 className="bg-[#18181B] p-3 text-white placeholder-gray-400 focus:outline-none"
               />
               <h3 className="text-sm">Email</h3>
               <input
                 type="email"
                 name="email"
+                value={formData.email}
+                onChange={handleChange}
                 className="bg-[#18181B] p-3 text-white placeholder-gray-400 focus:outline-none"
               />
               <h3 className="text-sm">Message</h3>
               <textarea
                 name="message"
+                value={formData.message}
+                onChange={handleChange}
                 className="h-40 bg-[#18181B] p-3 text-white placeholder-gray-400 focus:outline-none"
               />
               <Button
@@ -61,6 +136,12 @@ const Footer = () => {
               >
                 Get in touch
               </Button>
+              {successMessage && (
+                <p className="text-green-600">{successMessage}</p>
+              )}
+              {errorMessage && (
+                <p className="text-red-600">{errorMessage}</p>
+              )}
               <div className="mt-8 text-center text-gray-400">
                 Powered by FairCompute Platform
               </div>
@@ -74,11 +155,11 @@ const Footer = () => {
       {/* Payment Options Image */}
       <div className="flex w-full justify-center pb-8">
         <Image
-          src="/footer.png" // Update this path as needed
+          src="/footer.png" 
           alt="Payment Options"
-          width={1000} // Adjust the width as per your layout needs
-          height={50} // Adjust the height as per your layout needs
-          layout="intrinsic" // This will scale the image as per the width and height provided
+          width={1000} 
+          height={50} 
+          layout="intrinsic" 
         />
       </div>
     </div>

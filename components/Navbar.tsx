@@ -34,7 +34,7 @@ const Navbar = () => {
               </Link>
             </li>
             <li>
-              <Link href="/terms">
+              <Link href="/Neuralrack_ToS_v1.13.pdf">
                 <span className="block px-4 py-2 font-nunito text-white hover:text-gray-300 md:inline md:py-0">
                   Terms of Service
                 </span>
