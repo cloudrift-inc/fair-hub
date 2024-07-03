@@ -67,7 +67,8 @@ const fetchExecutorInfo = async (executorId: string): Promise<ExecutorInfoRespon
   }
 
   const data = await response.json();
-  return { ...data, executor_id: executorId };
+  console.log(data)
+  return { ...data["data"], executor_id: executorId };
 };
 
 const MyPodsDashboard: React.FC = () => {
