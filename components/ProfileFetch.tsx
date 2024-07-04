@@ -11,7 +11,7 @@ export const fetchProfile = async (token: string): Promise<ProfileData> => {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            "Authorization": `Bearer ${token}`,
         }
     });
 
