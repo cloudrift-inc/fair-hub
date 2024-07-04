@@ -7,6 +7,8 @@ import {
     FAIR_API_VERSION,
     getFairProviderPubApiKey,
     getFairApiUrl,
+    getFairProviderName,
+    getFairInstanceTypeName
 } from '@/lib/faircompute';
 
 interface RequestData {
@@ -102,8 +104,8 @@ function PopupPanel({ isOpen, onClose, gpuName, price, nodeId, gpus, cpucores, d
             dram: ram * (1024 * 1024 * 1024), // Convert GB to bytes
             disk: 0,
             auto_deactivate: false,
-            provider_name: "test_provider",
-            instance_type_name: "test_instance",
+            provider_name: getFairProviderName(),
+            instance_type_name: getFairInstanceTypeName(),
 
         };
         mutate(requestData);
