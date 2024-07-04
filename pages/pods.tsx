@@ -63,7 +63,6 @@ const LogoutButton = () => {
   const balanceMutation = useMutation<BalanceData, Error, string>({
     mutationFn: fetchBalanceData,
     onSuccess: (data) => {
-      console.log("Balance fetched successfully:", data);
       setBalance(data);
     },
     onError: (error) => {

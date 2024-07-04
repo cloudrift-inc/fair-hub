@@ -57,7 +57,6 @@ const ConsolePage: NextPage = () => {
   const balanceMutation = useMutation<BalanceData, Error, string>({
     mutationFn: fetchBalanceData,
     onSuccess: (data) => {
-      console.log("Balance fetched successfully:", data);
       setBalance(data);
       setCredit(data.balance / 100);
     },

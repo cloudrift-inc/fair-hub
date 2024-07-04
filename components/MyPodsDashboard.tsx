@@ -74,7 +74,6 @@ const fetchExecutors = async (): Promise<ListExecutorsResponse> => {
   }
 
   const data = await response.json();
-  console.log(data);
   return data['data'];
 };
 
