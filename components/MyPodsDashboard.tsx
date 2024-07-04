@@ -40,7 +40,7 @@ const fetchExecutors = async (): Promise<ListExecutorsResponse> => {
         },
     body: JSON.stringify({
       "version": FAIR_API_VERSION,
-      "data": { all: true },
+      "data": { all: false },
     })
   });
 
