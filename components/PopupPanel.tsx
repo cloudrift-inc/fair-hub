@@ -7,8 +7,6 @@ import {
     FAIR_API_VERSION,
     getFairProviderPubApiKey,
     getFairApiUrl,
-    getFairProviderName,
-    getFairInstanceTypeName
 } from '@/lib/faircompute';
 
 interface RequestData {
@@ -32,7 +30,9 @@ interface PopupPanelProps {
     nodeId: string; 
     gpus: number;
     cpucores: number;
+    totalCpus: number;
     dram: number;
+    totalRam: number;
     avail_gpus: number;
 }
 
@@ -67,8 +67,8 @@ const useCreateExecutor = () => {
     });
 };
 
-function PopupPanel({ isOpen, onClose, gpuName, price, nodeId, gpus, cpucores, dram ,avail_gpus}: PopupPanelProps) {
-    const [gpuQuantity, setGpuQuantity] = React.useState(avail_gpus/2);
+function PopupPanel({ isOpen, onClose, gpuName, price, nodeId, gpus, cpucores, totalCpus, dram, totalRam, avail_gpus}: PopupPanelProps) {
+    const [gpuQuantity, setGpuQuantity] = React.useState(avail_gpus > 0 ? 1 : 0);
     const [cpuCores, setCpuCores] = React.useState(0);
     const [ram, setRam] = React.useState(0);
     const [showMyPodPanel, setShowMyPodPanel] = React.useState(false);
@@ -81,11 +81,11 @@ function PopupPanel({ isOpen, onClose, gpuName, price, nodeId, gpus, cpucores, d
         let calculatedRam;
 
         if (gpuQuantity > 0 && gpus > 0) {
-            calculatedCpuCores = Math.floor((gpuQuantity * cpucores) / gpus);
-            calculatedRam = Math.floor((gpuQuantity * dram) / gpus);
+            calculatedCpuCores = Math.floor((gpuQuantity * totalCpus) / gpus);
+            calculatedRam = Math.floor((gpuQuantity * totalRam) / gpus);
         } else {
             calculatedCpuCores = cpuCores;
-            calculatedRam = Math.floor((cpuCores * dram) / cpucores);
+            calculatedRam = Math.floor((cpuCores * totalRam) / totalCpus);
         }
 
         setCpuCores(calculatedCpuCores > cpucores ? cpucores : calculatedCpuCores);
