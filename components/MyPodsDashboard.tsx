@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
 import MyPodsCard from './MyPodsCard';
-import {FAIR_API_VERSION} from "@/lib/faircompute";
+import {FAIR_API_VERSION, getFairApiUrl} from "@/lib/faircompute";
 
 interface ExecutorResourceInfo {
   provider_name: string;
@@ -56,8 +56,8 @@ function countBits(hexString: string): number {
 }
 
 const fetchExecutors = async (): Promise<ListExecutorsResponse> => {
-  const apiUrl = "http://localhost:8000/api/v1/executors/list"; // Adjust if needed
-  const response = await fetch(apiUrl, {
+  const apiUrl = getFairApiUrl();
+  const response = await fetch(`${apiUrl}/api/v1/executors/list`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
