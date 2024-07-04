@@ -115,7 +115,7 @@ const MyPodsCard: React.FC<MyPodsCardProps> = ({
         </div>
         <div className="flex justify-start items-center mt-1">
         <button
-          className="font-bold text-sm px-0 py-2 rounded hover transition duration-300"
+          className="font-bold text-sm px-0 py-2 rounded hover transition duration-300 text-red-600"
           style={{ marginRight: "5px" }} // Reduced margin-right
           onClick={handleStopExecutor}
         >

@@ -101,6 +101,7 @@ const GPUInfoDashboard: React.FC<GPUInfoDashboardProps> = ({ currentPage }) => {
                     ram={nodeInfo.dram}
                     nodeId={nodeInfo.id}
                     currentPage={currentPage}
+                    totalgpus={nodeInfo.gpus.length}
                 />
             ))}
             {mutation.isError && <div>{error}</div>}
