@@ -33,6 +33,7 @@ interface PopupPanelProps {
     gpus:number;
     cpucores:number;
     dram:number;
+    avail_gpus:number;
 }
 
 const createExecutor = async (requestData: RequestData) => {
@@ -66,8 +67,8 @@ const useCreateExecutor = () => {
     });
 };
 
-function PopupPanel({ isOpen, onClose, gpuName, price, nodeId, gpus, cpucores, dram }: PopupPanelProps) {
-    const [gpuQuantity, setGpuQuantity] = React.useState(gpus);
+function PopupPanel({ isOpen, onClose, gpuName, price, nodeId, gpus, cpucores, dram ,avail_gpus}: PopupPanelProps) {
+    const [gpuQuantity, setGpuQuantity] = React.useState(avail_gpus/2);
     const [cpuCores, setCpuCores] = React.useState(0);
     const [ram, setRam] = React.useState(0);
     const [showMyPodPanel, setShowMyPodPanel] = React.useState(false);
