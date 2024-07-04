@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
 import MyPodsCard from './MyPodsCard';
+import {FAIR_API_VERSION} from "@/lib/faircompute";
 
 interface ExecutorResourceInfo {
   provider_name: string;
@@ -38,7 +39,7 @@ const fetchExecutors = async (): Promise<ListExecutorsResponse> => {
       "Authorization": "Bearer " + localStorage.getItem("token")
         },
     body: JSON.stringify({
-      "version": "2024-06-17",
+      "version": FAIR_API_VERSION,
       "data": { all: true },
     })
   });
