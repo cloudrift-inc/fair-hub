@@ -6,16 +6,12 @@ export interface BalanceData {
 
 export const fetchBalance = async (token: string): Promise<BalanceData> => {
     const apiUrl = getFairApiUrl();
-    const response = await fetch(`${apiUrl}/api/v1/users/info`, {
+    const response = await fetch(`${apiUrl}/api/v1/account/info`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
-            "X-API-Key": getFairProviderPubApiKey(),
         },
-        body: JSON.stringify({
-            version: FAIR_API_VERSION,
-        })
     });
 
     if (!response.ok) {

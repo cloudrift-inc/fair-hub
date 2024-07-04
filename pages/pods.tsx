@@ -145,7 +145,7 @@ const ConsoleRenting: NextPage = () => {
   }, []);
 
   useEffect(() => {
-    const token = localStorage.getItem("token") || "";
+    const token = localStorage.getItem("token") || null;
     if (token) {
       const fetchAndSetBalance = async () => {
         try {
