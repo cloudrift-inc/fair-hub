@@ -11,6 +11,7 @@ interface GpuCardProps {
   price: string;
   nodeId: string;
   currentPage: string;
+  totalgpus:number;
 }
 
 const GpuCard: React.FC<GpuCardProps> = ({
@@ -21,6 +22,7 @@ const GpuCard: React.FC<GpuCardProps> = ({
   price,
   nodeId,
   currentPage,
+  totalgpus,
 }) => {
   const [isPanelOpen, setPanelOpen] = useState(false);
   const router = useRouter();
@@ -103,7 +105,7 @@ const GpuCard: React.FC<GpuCardProps> = ({
           <div className="absolute inset-0 bg-black opacity-50" onClick={handlePanelClose}></div>
           <div className="relative z-10">
             <PopupPanel isOpen={isPanelOpen} onClose={handlePanelClose} gpuName={title} price={price} nodeId={nodeId}
-            gpus={gpuQuantity} cpucores={cpuCores} dram={ram}
+            gpus={totalgpus} cpucores={cpuCores} dram={ram}
             />
           </div>
         </div>
