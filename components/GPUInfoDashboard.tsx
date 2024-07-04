@@ -131,6 +131,7 @@ const GPUInfoDashboard: React.FC<GPUInfoDashboardProps> = ({ currentPage }) => {
                     ram={nodeInfo.dram}
                     nodeId={nodeInfo.nodeId}
                     currentPage={currentPage}
+                    totalgpus={nodeInfo.gpus.length}
                 />
                 
             ))}
