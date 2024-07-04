@@ -1,10 +1,13 @@
-// PopupPanel.tsx
 import * as React from "react";
 import {useMutation} from '@tanstack/react-query';
 import '../app/globals.css';
 import { useRouter } from 'next/router';
 import MyPodPanel from './MyPodPanel'; // Adjust the import path if necessary
-import {FAIR_API_VERSION, getFairProviderPubApiKey, getFairApiUrl} from '@/lib/faircompute';
+import {
+    FAIR_API_VERSION,
+    getFairProviderPubApiKey,
+    getFairApiUrl,
+} from '@/lib/faircompute';
 
 interface RequestData {
     node_id: string;
@@ -63,9 +66,9 @@ const useCreateExecutor = () => {
     });
 };
 
-function PopupPanel({isOpen, onClose, gpuName, price, nodeId, gpus, cpucores, dram }: PopupPanelProps) {
-    const [gpuQuantity, setGpuQuantity] = React.useState(1);
-    const [cpuCores, setGpuCores] = React.useState(3);
+function PopupPanel({ isOpen, onClose, gpuName, price, nodeId, gpus, cpucores, dram }: PopupPanelProps) {
+    const [gpuQuantity, setGpuQuantity] = React.useState(gpus);
+    const [cpuCores, setCpuCores] = React.useState(0);
     const [ram, setRam] = React.useState(0);
     const [showMyPodPanel, setShowMyPodPanel] = React.useState(false);
     const [isRented, setIsRented] = React.useState(false);
@@ -74,25 +77,28 @@ function PopupPanel({isOpen, onClose, gpuName, price, nodeId, gpus, cpucores, dr
     const router = useRouter();
 
     React.useEffect(() => {
-        let calculateCpuCores = Math.floor((gpuQuantity * cpucores)/gpus);
-        let calculateRam = Math.floor((gpuQuantity * dram)/gpus);
+        let calculatedCpuCores;
+        let calculatedRam;
 
-        if (gpuQuantity === 0 || gpus==0) {
-            calculateCpuCores = cpuCores; // CPU cores can be directly set by the user when GPUs are 0
-            calculateRam = Math.floor((cpuCores * dram)/cpucores); // Linear scaling based on the max values provided (196 GB for 64 cores)
+        if (gpuQuantity > 0 && gpus > 0) {
+            calculatedCpuCores = Math.floor((gpuQuantity * cpucores) / gpus);
+            calculatedRam = Math.floor((gpuQuantity * dram) / gpus);
+        } else {
+            calculatedCpuCores = cpuCores;
+            calculatedRam = Math.floor((cpuCores * dram) / cpucores);
         }
-        
-        setGpuCores(calculateCpuCores > cpucores ? cpucores : calculateCpuCores);
-        setRam(calculateRam > dram ? dram : calculateRam);
-    }, [gpuQuantity, cpuCores, cpucores]);
+
+        setCpuCores(calculatedCpuCores > cpucores ? cpucores : calculatedCpuCores);
+        setRam(calculatedRam > dram ? dram : calculatedRam);
+    }, [gpuQuantity, gpus, cpucores, dram]);
 
     const handleSubmit = () => {
 
         const requestData: RequestData = {
             node_id: nodeId,
-            cpus: 1,
+            cpus: cpuCores,
             gpus: gpuQuantity,
-            dram: ram *(1024* 1024* 1024),
+            dram: ram * (1024 * 1024 * 1024), // Convert GB to bytes
             disk: 0,
             auto_deactivate: false,
             provider_name: "test_provider",
@@ -116,8 +122,7 @@ function PopupPanel({isOpen, onClose, gpuName, price, nodeId, gpus, cpucores, dr
 
             return () => clearTimeout(timer);
         }
-    }, [showMyPodPanel]);
-
+    }, [showMyPodPanel, router]);
 
     if (!isOpen) {
         return null;
@@ -216,7 +221,7 @@ function PopupPanel({isOpen, onClose, gpuName, price, nodeId, gpus, cpucores, dr
                                 max={cpucores}
                                 step="1"
                                 value={cpuCores}
-                                onChange={(e) => setGpuCores(Number(e.target.value))}
+                                onChange={(e) => setCpuCores(Number(e.target.value))}
                                 className="w-full h-2 bg-neutral-700 rounded-lg appearance-none cursor-pointer accent-[#191970]"
                             />
                             <span className="ml-4 text-white">{cpuCores}</span>
