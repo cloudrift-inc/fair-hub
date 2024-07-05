@@ -1,7 +1,7 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import GpuCard from "./GpuCard";
-import {useMutation} from "@tanstack/react-query";
-import {getFairProviderPubApiKey, getFairApiUrl} from "@/lib/faircompute";
+import { useMutation } from "@tanstack/react-query";
+import { getFairProviderPubApiKey, getFairApiUrl } from "@/lib/faircompute";
 
 interface NodeInfoResponse {
     instance?: {
@@ -25,10 +25,11 @@ interface NodeInfoResponse {
     gpus_mask: string;
     dram: number;
     disk: number;
+    id: string;
 }
 
 interface ListNodesResponse {
-    nodes: string[];
+    nodes: NodeInfoResponse[];
 }
 
 interface GPUInfoDashboardProps {
@@ -37,13 +38,12 @@ interface GPUInfoDashboardProps {
 
 const fetchNodeIds = async (): Promise<ListNodesResponse> => {
     const apiUrl = getFairApiUrl();
-    const response = await fetch(`${apiUrl}/api/v1/nodes/list`, {
+    const response = await fetch(`${apiUrl}/api/v1/marketplace/providers/nodes/list`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
             "X-API-Key": getFairProviderPubApiKey(),
             "Authorization": "Bearer " + localStorage.getItem("token")
-
         },
     });
 
@@ -52,60 +52,30 @@ const fetchNodeIds = async (): Promise<ListNodesResponse> => {
     }
 
     const data = await response.json();
-    console.log(data);
-    return data["data"];
-};
-
-const fetchNodeInfo = async (nodeId: string): Promise<NodeInfoResponse> => {
-    const apiUrl = getFairApiUrl();
-    const response = await fetch(`${apiUrl}/api/v1/nodes/${nodeId}/info`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "X-API-Key": getFairProviderPubApiKey(),
-            "Authorization": "Bearer " + localStorage.getItem("token")
-
-        },
-    });
-
-    if (!response.ok) {
-        console.log(response.statusText)
-        throw new Error("Error fetching node info: " + response.statusText);
-    }
-
-    const data = await response.json();
-    console.log(data);
     return data["data"];
 };
 
 const GPUInfoDashboard: React.FC<GPUInfoDashboardProps> = ({ currentPage }) => {
-    const [nodeInfoList, setNodeInfoList] = useState<(NodeInfoResponse & { nodeId: string })[]>([]);
+    const [nodeInfoList, setNodeInfoList] = useState<NodeInfoResponse[]>([]);
     const [error, setError] = useState<string | null>(null);
 
     const mutation = useMutation<ListNodesResponse, Error>({
         mutationFn: async () => {
             return fetchNodeIds();
         },
-        onSuccess: async (data) => {
-            const nodeInfoPromises = data.nodes.map((nodeId) => fetchNodeInfo(nodeId));
-            try {
-                const nodeInfoResponses = await Promise.all(nodeInfoPromises);
-                setNodeInfoList(
-                    nodeInfoResponses.map((nodeInfo, index) => ({
-                        ...nodeInfo,
-                        instance: nodeInfo.instance || {
-                            provider: "Unknown",
-                            instance_type: "Unknown",
-                            cost_per_hour: 10,
-                        },
-                        nodeId: data.nodes[index],
-                        dram: Math.floor(nodeInfo.dram / (1024 * 1024 * 1024)),
-                    }))
-                );
-                setError(null);
-            } catch (error) {
-                setError("Error fetching node info: " + (error as Error).message);
-            }
+        onSuccess: (data) => {
+            setNodeInfoList(
+                data.nodes.map((nodeInfo) => ({
+                    ...nodeInfo,
+                    instance: nodeInfo.instance || {
+                        provider: "Unknown",
+                        instance_type: "Unknown",
+                        cost_per_hour: 10,
+                    },
+                    dram: Math.floor(nodeInfo.dram / (1024 * 1024 * 1024)),
+                }))
+            );
+            setError(null);
         },
         onError: (error: Error) => {
             setError("Error fetching node IDs: " + error.message);
@@ -119,7 +89,7 @@ const GPUInfoDashboard: React.FC<GPUInfoDashboardProps> = ({ currentPage }) => {
     return (
         <div
             className="flex flex-wrap items-start justify-start p-4"
-            style={{rowGap: "28px", columnGap: "22px"}}
+            style={{ rowGap: "28px", columnGap: "22px" }}
         >
             {nodeInfoList.map((nodeInfo, index) => (
                 <GpuCard
@@ -127,13 +97,14 @@ const GPUInfoDashboard: React.FC<GPUInfoDashboardProps> = ({ currentPage }) => {
                     title={nodeInfo.gpus.length > 0 ? nodeInfo.gpus[0].brand : "None"}
                     gpuQuantity={nodeInfo.gpus_available}
                     cpuCores={nodeInfo.cpu.available_core_count}
-                    price={`$${nodeInfo.instance?.cost_per_hour || nodeInfo.gpus_available}/hr`}
+                    totalCpus={nodeInfo.cpu.physical_core_count}
+                    price={`\$${(nodeInfo.instance?.cost_per_hour || 0.0) / 100}/hr`}
                     ram={nodeInfo.dram}
-                    nodeId={nodeInfo.nodeId}
+                    totalRam={nodeInfo.dram}
+                    nodeId={nodeInfo.id}
                     currentPage={currentPage}
                     totalgpus={nodeInfo.gpus.length}
                 />
-                
             ))}
             {mutation.isError && <div>{error}</div>}
         </div>

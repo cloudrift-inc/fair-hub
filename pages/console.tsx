@@ -6,6 +6,10 @@ import GPUInfoDashboard from '../components/GPUInfoDashboard';
 import SidebarConsole from '../components/SidebarConsole';
 import SidebarMyPods from '../components/SideBarMyPods';
 import ConsoleHeader from '../components/ConsoleHeader';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { fetchProfile, ProfileData } from "../components/ProfileFetch";
+import { fetchBalance, BalanceData } from "../components/BalanceFetch";
+import { useRouter } from 'next/router';
 
 const ConsolePage: NextPage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -31,7 +35,6 @@ const ConsolePage: NextPage = () => {
           <div className="relative pt-10 sm:pt-40 mt-10 md:ml-[284px] md:mt-3">
             {isLoggedIn ? <GPUInfoDashboard currentPage="console_login" /> : <GPUInfoDashboard currentPage="console" />}
           </div>
-          <div className="absolute top-0 left-full h-full w-px bg-gray-300"></div>
         </div>
       </div>
     </div>

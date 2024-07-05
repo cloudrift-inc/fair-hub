@@ -66,7 +66,7 @@ export default function LoginForm() {
       // Store token in localStorage or sessionStorage
       localStorage.setItem("token", token); // or sessionStorage.setItem("token", token);
       // Update user context with logged-in user data if needed
-      router.push('/console_login')
+      router.push('/console')
     },
     onError: (error) => {
       setError(error.message);

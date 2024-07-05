@@ -99,7 +99,7 @@ function MyPodPanel({ isOpen, onClose , executorId}: MyPodPanelProps) {
             }}
             className="flex-1 p-2  rounded-l-md text-purple-300"
           >
-            fair docker -e {executorId} run alpine echo hello
+            fair docker -x {executorId} run alpine echo hello
           </div>
           <button
             className="px-2 py-1 text-teal-500  rounded-r-md"

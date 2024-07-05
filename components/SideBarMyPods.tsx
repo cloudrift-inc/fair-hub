@@ -15,7 +15,7 @@ const SidebarMyPods: React.FC = () => {
       <nav>
         <ul>
           <li className='mb-3'>
-            <Link href='/console_login'>
+            <Link href='/console'>
               <span className={`p-2 rounded flex items-center ${router.pathname === '/pods' ? 'hover:bg-gray-700' : 'bg-[#191970] hover:bg-blue-700'}`}>
                 <HomeIcon className='mr-3' />
                 Console

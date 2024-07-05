@@ -3,7 +3,7 @@ import '../app/console.css';
 import MyPodPanel from '../components/MyPodPanel';
 import {useMutation} from "@tanstack/react-query";
 import StopIcon from '@mui/icons-material/Stop';
-import {getFairApiUrl} from "@/lib/faircompute";
+import {getFairApiUrl, getFairProviderPubApiKey} from "@/lib/faircompute";
 
 interface MyPodsCardProps {
   title: string;
@@ -20,7 +20,7 @@ const stopExecutor = async (executorId: string): Promise<void> => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "X-API-Key": "debug_api_key",
+      "X-API-Key": getFairProviderPubApiKey(),
       "Authorization": "Bearer " + localStorage.getItem("token")
     },
   });
@@ -28,9 +28,6 @@ const stopExecutor = async (executorId: string): Promise<void> => {
   if (!response.ok) {
     throw new Error(response.statusText);
   }
-
-  const data = await response.json();
-  return data;
 };
 
 const MyPodsCard: React.FC<MyPodsCardProps> = ({
