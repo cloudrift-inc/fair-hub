@@ -194,11 +194,13 @@ const ConsoleRenting: NextPage = () => {
         </div>
         <div className="flex-1">
           <div className="absolute top-0 left-0 w-full h-[85px] bg-black-100 shadow-md flex items-center justify-between border-b border-[#292929]">
+          <Link href={'/'}>
             <div className="flex items-center">
               <div className="ml-4">
                 <Image src='/logo.png' alt='NeuralRack Hosting Logo' width={280} height={280} className='shrink-0' />
               </div>
             </div>
+            </Link>
             <div className="mr-4">
               <LogoutButton />
             </div>
