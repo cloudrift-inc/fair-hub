@@ -109,32 +109,35 @@ const ConsoleHeader: React.FC = () => {
   return (
     <div className="absolute top-0 left-0 w-full h-[85px] bg-black-100 shadow-md flex items-center justify-between border-b border-[#292929]">
       <div className="flex items-center">
-      <Link href='/'>
-        <div className="ml-4">
-          <Image src='/logo.png' alt='NeuralRack Hosting Logo' width={280} height={280} className='shrink-0' />
-        </div>
+        <Link href='/'>
+          <div className="ml-4">
+            <Image src='/logo.png' alt='NeuralRack Hosting Logo' width={280} height={280} className='shrink-0' />
+          </div>
         </Link>
       </div>
-      <div className="flex items-center gap-4 mr-4 relative">
+      <div className="flex items-center gap-4 relative mr-10">
         {isLoggedIn ? (
           <>
-            <button className="flex items-center space-x-2" onClick={handleButtonClick}>
-              <span>{profile ? profile.name : "Username"}</span>
-              <img className="h-7 w-7 rounded-full overflow-hidden" alt="Profile" src="/byewind@2x.png" />
-            </button>
-            {isDropdownOpen && (
-              <div ref={dropdownRef} className="absolute top-10 right-0 mt-2 w-28 bg-[#292929] rounded-md shadow-lg z-10">
-                <button
-                  className="block w-full text-left px-4 py-2 text-sm text-white focus:outline-none rounded-md hover:bg-gray-700"
-                  onClick={handleLogout}
-                >
-                  <div className="flex items-center">
-                    <LogoutIcon className="mr-2" />
-                    <span>Logout</span>
-                  </div>
-                </button>
-              </div>
-            )}
+            <div className="flex items-center space-x-2">
+              <button className="flex items-center space-x-2" onClick={handleButtonClick}>
+                <span>{profile ? profile.name : "Username"}</span>
+                <img className="h-7 w-7 rounded-full overflow-hidden" alt="Profile" src="/byewind@2x.png" />
+              </button>
+              {isDropdownOpen && (
+                <div ref={dropdownRef} className="absolute top-9 right-0 mt-2 w-28 bg-[#292929] rounded-md shadow-lg z-10">
+                  <button
+                    className="block w-full text-left px-4 py-2 text-sm text-white focus:outline-none rounded-md hover:bg-gray-700"
+                    onClick={handleLogout}
+                  >
+                    <div className="flex items-center">
+                      <LogoutIcon className="mr-2" />
+                      <span>Logout</span>
+                    </div>
+                  </button>
+                </div>
+              )}
+            </div>
+            
           </>
         ) : (
           <>
@@ -152,11 +155,12 @@ const ConsoleHeader: React.FC = () => {
             </Link>
           </>
         )}
+       
       </div>
-      <div className="flex items-center space-x-4 absolute top-[109px] right-10">
+      <div className="flex items-center space-x-4 absolute top-[114px] right-10 z-10">
         <b className="text-sm inline-block">Available Credit: ${credit}</b>
         <Link href="/billing">
-          <Button className="rounded-full bg-[#191970] py-2 px-4 font-bold text-sm text-white">
+          <Button className="rounded-full bg-[#191970] py-2 px-4 font-bold text-sm">
             Add Credits
           </Button>
         </Link>
