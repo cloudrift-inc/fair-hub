@@ -1,4 +1,3 @@
-// components/Header.tsx
 import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -82,6 +81,7 @@ const ConsoleHeader: React.FC = () => {
     setBalance(null);
     setCredit(0);
     setIsDropdownOpen(false);
+    window.location.reload();
   };
 
   const handleButtonClick = () => {
