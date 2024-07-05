@@ -28,9 +28,6 @@ const stopExecutor = async (executorId: string): Promise<void> => {
   if (!response.ok) {
     throw new Error(response.statusText);
   }
-
-  const data = await response.json();
-  return data;
 };
 
 const MyPodsCard: React.FC<MyPodsCardProps> = ({

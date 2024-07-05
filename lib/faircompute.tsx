@@ -50,4 +50,4 @@ export function getFairInstanceTypeName(): string {
     }
 }
 
-export const FAIR_API_VERSION = "2024-06-17";
+export const FAIR_API_VERSION = "2024-07-04";

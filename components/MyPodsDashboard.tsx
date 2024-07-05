@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
 import MyPodsCard from './MyPodsCard';
+import {FAIR_API_VERSION, getFairApiUrl} from "@/lib/faircompute";
 
 interface ExecutorResourceInfo {
   provider_name: string;
@@ -29,17 +30,42 @@ interface ListExecutorsResponse {
   executors: ExecutorAndUsageInfo[];
 }
 
+function countBits(hexString: string): number {
+  // Remove any leading "0x" if present
+  if (hexString.startsWith("0x")) {
+    hexString = hexString.slice(2);
+  }
+
+  // Convert hex string to a binary string
+  let binaryString = '';
+  for (let char of hexString) {
+    // Convert each hex character to a 4-bit binary string
+    const binaryChar = parseInt(char, 16).toString(2).padStart(4, '0');
+    binaryString += binaryChar;
+  }
+
+  // Count the number of '1' bits in the binary string
+  let bitCount = 0;
+  for (let bit of binaryString) {
+    if (bit === '1') {
+      bitCount++;
+    }
+  }
+
+  return bitCount;
+}
+
 const fetchExecutors = async (): Promise<ListExecutorsResponse> => {
-  const apiUrl = "http://localhost:8000/api/v1/executors/list"; // Adjust if needed
-  const response = await fetch(apiUrl, {
+  const apiUrl = getFairApiUrl();
+  const response = await fetch(`${apiUrl}/api/v1/executors/list`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       "Authorization": "Bearer " + localStorage.getItem("token")
         },
     body: JSON.stringify({
-      "version": "2024-06-17",
-      "data": { all: true },
+      "version": FAIR_API_VERSION,
+      "data": { all: false },
     })
   });
 
@@ -80,8 +106,8 @@ const MyPodsDashboard: React.FC = () => {
           <MyPodsCard
             key={index}
             title={`NVIDIA GeForce RTX 4090`}
-            gpuQuantity={executorInfo.gpu_mask ? executorInfo.gpu_mask.split("").filter((bit) => bit === "1").length : 0}
-            cpuCores={executorInfo.cpu_mask ? executorInfo.cpu_mask.split("").filter((bit) => bit === "1").length : 0}
+            gpuQuantity={countBits(executorInfo.gpu_mask)}
+            cpuCores={countBits(executorInfo.cpu_mask)}
             ram={`${Math.floor(executorInfo.dram / (1024 * 1024 * 1024))} GB`}
             status={executorInfo.status}
             executorId={executorInfo.id}

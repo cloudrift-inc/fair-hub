@@ -97,8 +97,10 @@ const GPUInfoDashboard: React.FC<GPUInfoDashboardProps> = ({ currentPage }) => {
                     title={nodeInfo.gpus.length > 0 ? nodeInfo.gpus[0].brand : "None"}
                     gpuQuantity={nodeInfo.gpus_available}
                     cpuCores={nodeInfo.cpu.available_core_count}
-                    price={`¢${(nodeInfo.instance?.cost_per_hour || 0.0) / 100}/hr`}
+                    totalCpus={nodeInfo.cpu.physical_core_count}
+                    price={`\$${(nodeInfo.instance?.cost_per_hour || 0.0) / 100}/hr`}
                     ram={nodeInfo.dram}
+                    totalRam={nodeInfo.dram}
                     nodeId={nodeInfo.id}
                     currentPage={currentPage}
                     totalgpus={nodeInfo.gpus.length}
