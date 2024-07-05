@@ -158,12 +158,14 @@ const ConsoleHeader: React.FC = () => {
        
       </div>
       <div className="flex items-center space-x-4 absolute top-[114px] right-10 z-10">
-        <b className="text-sm inline-block">Available Credit: ${credit}</b>
-        <Link href="/billing">
-          <Button className="rounded-full bg-[#191970] py-2 px-4 font-bold text-sm">
-            Add Credits
-          </Button>
-        </Link>
+        <b className="text-sm inline-block">Available Credit: ${isLoggedIn ? credit : 0}</b>
+        {isLoggedIn && (
+          <Link href="/billing">
+            <Button className="rounded-full bg-[#191970] py-2 px-4 font-bold text-sm">
+              Add Credits
+            </Button>
+          </Link>
+        )}
       </div>
     </div>
   );
