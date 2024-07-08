@@ -37,7 +37,6 @@ const ConsoleHeader: React.FC = () => {
   const profileMutation = useMutation<ProfileData, Error, string>({
     mutationFn: fetchProfileData,
     onSuccess: (data) => {
-      console.log("Profile fetched successfully:", data);
       setProfile(data);
     },
     onError: (error) => {
@@ -49,7 +48,6 @@ const ConsoleHeader: React.FC = () => {
   const balanceMutation = useMutation<BalanceData, Error, string>({
     mutationFn: fetchBalanceData,
     onSuccess: (data) => {
-      console.log("Balance fetched successfully:", data);
       setBalance(data);
       setCredit(data.balance / 100);
     },
