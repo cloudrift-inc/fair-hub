@@ -32,7 +32,7 @@ const SidebarMyPods: React.FC = () => {
             </Link>
           </li>
           <li className='mb-3'>
-            <Link href='/billing'>
+            <Link href='/transactions'>
                 <span className='hover:bg-gray-700 p-2 rounded flex items-center'>
                     <AccountBalanceIcon className='mr-2' />
                     Billing
