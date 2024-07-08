@@ -1,15 +1,11 @@
 // pages/console.tsx
 import type { NextPage } from "next";
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../app/globals.css';
 import GPUInfoDashboard from '../components/GPUInfoDashboard';
 import SidebarConsole from '../components/SidebarConsole';
 import SidebarMyPods from '../components/SideBarMyPods';
 import ConsoleHeader from '../components/ConsoleHeader';
-import LogoutIcon from '@mui/icons-material/Logout';
-import { fetchProfile, ProfileData } from "../components/ProfileFetch";
-import { fetchBalance, BalanceData } from "../components/BalanceFetch";
-import { useRouter } from 'next/router';
 
 const ConsolePage: NextPage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
