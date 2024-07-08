@@ -90,7 +90,7 @@ function PopupPanel({ isOpen, onClose, gpuName, price, nodeId, gpus, cpucores, t
 
         setCpuCores(calculatedCpuCores > cpucores ? cpucores : calculatedCpuCores);
         setRam(calculatedRam > dram ? dram : calculatedRam);
-    }, [gpuQuantity, gpus, cpucores, dram]);
+    }, [gpuQuantity, gpus, cpucores, dram, cpuCores]);
 
     const handleSubmit = () => {
         const requestData: RequestData = {
