@@ -1,13 +1,11 @@
+import '../app/globals.css';
 import type { NextPage } from "next";
 import React from 'react';
-import '../app/globals.css';
 import MyPodsDashboard from '../components/MyPodsDashboard';
 import SidebarMyPods from '../components/SideBarMyPods';
 import ConsoleHeader from '../components/ConsoleHeader';
 
-
 const ConsoleRenting: NextPage = () => {
-
   return (
     <div className="relative w-full bg-[#1C1C1C] min-h-screen overflow-hidden text-left text-sm text-white font-robuous">
         <ConsoleHeader />
