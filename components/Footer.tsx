@@ -4,7 +4,6 @@ import Button from "./foundational/Button";
 import Link from "./foundational/Link";
 import { getOmnisendApiKey } from "../lib/faircompute";
 
-
 const Footer = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -50,13 +49,12 @@ const Footer = () => {
     };
 
     try {
-
       const response = await fetch('https://api.omnisend.com/v5/contacts', options);
       if (response.ok) {
         const result = await response.json();
         console.log(result);
         setSuccessMessage('Message has been sent. We will contact you soon.');
-        setErrorMessage(''); 
+        setErrorMessage('');
         setFormData({
           name: '',
           email: '',
@@ -64,47 +62,49 @@ const Footer = () => {
         });
       } else {
         setErrorMessage('Failed to send message. Please try again later.');
-        setSuccessMessage(''); 
+        setSuccessMessage('');
       }
     } catch (err) {
       console.error(err);
       setErrorMessage('An error occurred. Please try again later.');
-      setSuccessMessage(''); 
+      setSuccessMessage('');
     }
   };
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-linear-gradient text-white" id="contactus">
-      <div className="flex flex-1 flex-col space-y-8 px-4 py-8 md:flex-row md:space-y-0">
+      <div className="flex flex-1 flex-col px-4 py-8 md:flex-row md:justify-center md:items-center">
         {/* Left Section */}
-        <div className="flex flex-1 flex-col space-y-12 px-4 md:ml-24 lg:ml-[300px] md:items-start md:justify-center md:px-12">
-          <div className="space-y-8">
-            <h2 className="text-4xl font-bold leading-[1.25] md:text-6xl">
-              Let's Talk
-            </h2>
-            <p className="text-zinc-400">
-              Proudly hosted in Research Triangle Park
-            </p>
-          </div>
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Email</h3>
-            <p>support@neuralrack.ai</p>
-          </div>
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Socials</h3>
-            <p>
-              <Link
-                href="https://discord.com/invite/JqjZPwrdZe"
-                className="text-white underline"
-              >
-                Discord
-              </Link>
-            </p>
+        <div className="flex flex-1 justify-end pr-[14rem] pb-24">
+          <div className="flex flex-col space-y-8 md:space-y-12 md:items-start">
+            <div className="space-y-10">
+              <h2 className="text-4xl font-bold leading-[1.25] md:text-7xl">
+                Let's Talk
+              </h2>
+              <p className="text-zinc-400">
+                Proudly hosted in Research Triangle Park
+              </p>
+            </div>
+            <div className="space-y-4">
+              <h3 className="text-xl font-semibold">Email</h3>
+              <p>support@neuralrack.ai</p>
+            </div>
+            <div className="space-y-4">
+              <h3 className="text-xl font-semibold">Socials</h3>
+              <p>
+                <Link
+                  href="https://discord.com/invite/JqjZPwrdZe"
+                  className="text-white underline"
+                >
+                  Discord
+                </Link>
+              </p>
+            </div>
           </div>
         </div>
 
         {/* Right Section */}
-        <div className="flex flex-1 items-center justify-center md:mr-20 md:px-12 md:pt-20">
+        <div className="flex flex-1 justify-start pl-24">
           <form className="w-full max-w-md space-y-4" onSubmit={handleSubmit}>
             <div className="flex flex-col space-y-4">
               <h3 className="text-sm">Name</h3>
@@ -151,15 +151,15 @@ const Footer = () => {
       </div>
 
       {/* Horizontal Line */}
-      <hr className="mx-auto my-8 h-[1px] w-3/5 rounded border-0 bg-gray-600 opacity-50" />
+      <hr className="mx-auto my-8 h-[1px] w-[65%] rounded border-0 bg-gray-600 opacity-50" />
       {/* Payment Options Image */}
       <div className="flex w-full justify-center pb-8">
         <Image
-          src="/footer.png" 
+          src="/footer.png"
           alt="Payment Options"
-          width={1000} 
-          height={50} 
-          layout="intrinsic" 
+          width={1000}
+          height={50}
+          layout="intrinsic"
         />
       </div>
     </div>

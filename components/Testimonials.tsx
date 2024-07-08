@@ -28,7 +28,7 @@ const testimonials: Testimonial[] = [
 const Testimonials: React.FC = () => {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-black py-12">
-      <h2 className="mb-20 text-4xl text-white">
+      <h2 className="mb-20 text-5xl text-white">
         Hear from Our Satisfied Users
       </h2>
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-4 md:grid-cols-2 lg:grid-cols-3">

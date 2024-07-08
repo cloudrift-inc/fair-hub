@@ -1,8 +1,10 @@
 import React, { useCallback, useState, useEffect } from "react";
-import { loadStripe } from "@stripe/stripe-js";
+import { loadStripe, StripeElementsOptions } from "@stripe/stripe-js";
 import {
   EmbeddedCheckoutProvider,
   EmbeddedCheckout,
+  Elements,
+  PaymentElement,
 } from "@stripe/react-stripe-js";
 import "../app/globals.css";
 import { fetchProfile } from "../components/ProfileFetch";
@@ -85,7 +87,7 @@ const Billing: React.FC = () => {
 
   return (
     <div id="checkout" className="min-h-screen bg-[#191970]">
-      <EmbeddedCheckoutProvider stripe={stripePromise} options={options}>
+      <EmbeddedCheckoutProvider stripe={stripePromise} options={options }>
         <div className="pt-12">
           <EmbeddedCheckout />
         </div>
