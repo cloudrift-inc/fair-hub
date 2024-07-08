@@ -113,7 +113,7 @@ export default function LoginForm() {
               })}
             />
             {errors.email && (
-              <p className="text-zinc-500">{errors.email.message}</p>
+              <p className="text-red-500">{errors.email.message}</p>
             )}
             <div className="relative">
               <input
@@ -137,7 +137,7 @@ export default function LoginForm() {
               </Button>
             </div>
             {errors.password && (
-              <p className="text-zinc-500">{errors.password.message}</p>
+              <p className="text-red-500">{errors.password.message}</p>
             )}
             <Button
               className="font-roboto w-full rounded-full bg-[#0E1B4D] py-3 font-medium text-white"
@@ -145,7 +145,7 @@ export default function LoginForm() {
             >
               Log in
             </Button>
-            {error && <p className="text-zinc-500">{error}</p>}
+            {error && <p className="text-red-500">{error}</p>}
             <p className="font-roboto text-sm text-gray-500">
               <Link href="#" className="underline">
                 Forgot your password?

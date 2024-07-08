@@ -94,7 +94,7 @@ const Footer = () => {
             <h3 className="text-lg font-semibold">Socials</h3>
             <p>
               <Link
-                href="https://discord.gg/V4V6J8bM"
+                href="https://discord.com/invite/JqjZPwrdZe"
                 className="text-white underline"
               >
                 Discord
