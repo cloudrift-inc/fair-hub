@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
-interface Transaction {
+interface StripeTransaction {
   created_at: string;
   amount: number;
   info: {
@@ -12,13 +12,13 @@ interface Transaction {
   };
 }
 
-interface TransactionsTableProps {
-  transactions: Transaction[];
+interface StripeTransactionTableProps {
+  transactions: StripeTransaction[];
 }
 
 const formatAmount = (amountInCents: number) => (amountInCents / 100).toFixed(2);
 
-const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions }) => {
+const StripeTransactionTable: React.FC<StripeTransactionTableProps> = ({ transactions }) => {
   const [filter, setFilter] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [sortField, setSortField] = useState<'created_at' | 'amount'>('created_at');
@@ -41,7 +41,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions }) =
     }
   };
 
-  const filterTransactions = (transactions: Transaction[]) => {
+  const filterTransactions = (transactions: StripeTransaction[]) => {
     const now = new Date();
     let filteredTransactions = transactions;
 
@@ -91,36 +91,37 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions }) =
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
+        <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-bold">Transactions</h2>
-        <div className="flex items-center space-x-4">
-          <div className="relative flex items-center bg-[#292929] text-white py-2 px-4 rounded-lg">
-            <select
-              id="filter"
-              value={filter}
-              onChange={handleFilterChange}
-              className="bg-[#292929] text-white appearance-none pr-8"
-            >
-              <option value="all">All</option>
-              <option value="day">Daily</option>
-              <option value="week">Weekly</option>
-              <option value="month">Monthly</option>
-            </select>
-            <ArrowDropDownIcon className="absolute right-2 pointer-events-none" />
-          </div>
-          <div className="relative flex items-center bg-[#292929] text-white py-2 px-4 rounded-lg">
-            <input
-              type="text"
-              id="search"
-              value={searchTerm}
-              onChange={handleSearchChange}
-              className="bg-[#292929] text-white outline-none pr-8"
-              placeholder="Search"
-            />
-            <SearchIcon className="absolute right-2" />
-          </div>
+      <div className="flex items-center space-x-4 mb-6">
+        <div className="relative flex items-center bg-[#292929] text-white py-2 px-4 rounded-lg">
+          <select
+            id="filter"
+            value={filter}
+            onChange={handleFilterChange}
+            className="bg-[#292929] text-white appearance-none pr-8"
+          >
+            <option value="all">All</option>
+            <option value="day">Daily</option>
+            <option value="week">Weekly</option>
+            <option value="month">Monthly</option>
+          </select>
+          <ArrowDropDownIcon className="absolute right-2 pointer-events-none" />
+        </div>
+        <div className="relative flex items-center bg-[#292929] text-white py-2 px-4 rounded-lg">
+          <input
+            type="text"
+            id="search"
+            value={searchTerm}
+            onChange={handleSearchChange}
+            className="bg-[#292929] text-white outline-none pr-8"
+            placeholder="Search"
+          />
+          <SearchIcon className="absolute right-2" />
         </div>
       </div>
+    </div>
+
 
       <div className="bg-[#232323] p-4 rounded-sm overflow-x-auto">
         <table className="w-full text-left min-w-max">
@@ -169,4 +170,4 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions }) =
   );
 };
 
-export default TransactionsTable;
+export default StripeTransactionTable;
