@@ -11,18 +11,18 @@ const FounderSection: React.FC = () => {
             <Image
               src="/founder-image.png"
               alt="Rohith Hegde"
-              width={300}
-              height={300}
+              width={400}
+              height={400}
               className="mb-4 h-auto"
             />
             <div className="text-center md:text-left">
-              <h3 className="mb-2 mt-6 text-xl font-bold">Rohith Hegde</h3>
+              <h3 className="mb-2 mt-6 text-lg font-bold">Rohith Hegde</h3>
               <p className="mb-2 text-[#BABAD4]">Owner and Solution Engineer</p>
             </div>
           </div>
           <div className="text-top flex w-full flex-col  md:w-auto md:items-start md:text-left">
-            <h2 className="mb-6 text-4xl font-medium">Meet the Founder</h2>
-            <p className="max-w-xl text-lg font-light text-[#BABAD4]">
+            <h2 className="mb-6 text-6xl font-medium">Meet the Founder</h2>
+            <p className="max-w-lg text-xl font-light text-[#BABAD4]">
               Rohith brings a decade of experience in computer hardware and
               cryptocurrency mining, four years in full-stack software
               development, and a passion for AI compute solutions. His

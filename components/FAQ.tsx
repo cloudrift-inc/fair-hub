@@ -37,9 +37,9 @@ const FAQ: React.FC = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-black p-12">
+    <div className="flex min-h-[70vh] items-center justify-center bg-black p-12">
       <div className="w-full max-w-4xl">
-        <h2 className="mb-10  py-3 text-center text-4xl text-white">
+        <h2 className="mb-10 text-center text-4xl text-white">
           Answers to our frequently asked questions
         </h2>
         <div className="space-y-2">

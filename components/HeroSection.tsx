@@ -7,7 +7,7 @@ import Link from "./foundational/Link"
 const HeroSection: React.FC = () => {
   return (
     <div className="flex min-h-screen w-full max-w-none flex-col items-center justify-center bg-black px-4 text-center">
-      <h1 className="text-4xl font-extrabold leading-snug text-white sm:text-5xl md:text-6xl">
+      <h1 className="text-5xl font-extrabold leading-snug text-white sm:text-5xl md:text-6xl">
         Peak Performance, Smart Pricing.
       </h1>
       <p className="mt-4 max-w-lg text-base text-gray-400 sm:text-lg">
