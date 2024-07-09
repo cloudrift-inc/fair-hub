@@ -7,7 +7,7 @@ import ConsoleHeader from '../components/ConsoleHeader';
 
 const ConsoleRenting: NextPage = () => {
   return (
-    <div className="relative w-full bg-[#1C1C1C] min-h-screen overflow-hidden text-left text-sm text-white font-robuous">
+    <div className="relative w-full bg-[#1C1C1C] min-h-screen overflow-hidden text-left text-sm text-white">
         <ConsoleHeader />
       <b className="absolute top-[115px] left-[305px] text-lg inline-block">
         My Pods
