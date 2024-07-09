@@ -21,28 +21,28 @@ const Navbar = () => {
           <ul className="mt-4 flex flex-wrap space-x-0 md:mt-0 md:space-x-8">
             <li>
               <Link href="/#pricing">
-                <span className="block px-4 py-2 font-nunito text-white hover:text-gray-300 md:inline md:py-0">
+                <span className="block px-4 py-2 text-white hover:text-gray-300 md:inline md:py-0">
                   Pricing
                 </span>
               </Link>
             </li>
             <li>
               <Link href="/#contactus">
-                <span className="block px-4 py-2 font-nunito text-white hover:text-gray-300 md:inline md:py-0">
+                <span className="block px-4 py-2 text-white hover:text-gray-300 md:inline md:py-0">
                   Contact
                 </span>
               </Link>
             </li>
             <li>
               <Link href="/Neuralrack_ToS_v1.13.pdf">
-                <span className="block px-4 py-2 font-nunito text-white hover:text-gray-300 md:inline md:py-0">
+                <span className="block px-4 py-2 text-white hover:text-gray-300 md:inline md:py-0">
                   Terms of Service
                 </span>
               </Link>
             </li>
             <li>
               <Link href="/about">
-                <span className="block px-4 py-2 font-nunito text-white hover:text-gray-300 md:inline md:py-0">
+                <span className="block px-4 py-2 text-white hover:text-gray-300 md:inline md:py-0">
                   About Us
                 </span>
               </Link>
