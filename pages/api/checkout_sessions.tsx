@@ -1,11 +1,15 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import Stripe from "stripe";
-import {getStripeSecretKey} from "@/lib/faircompute";
+import {getStripeSecretKey, getStripePriceID} from "@/lib/faircompute";
 
 const stripeSecretKey = getStripeSecretKey();
+const stripePriceID = getStripePriceID();
 
 if (!stripeSecretKey) {
   throw new Error("Stripe secret key not found in environment variables");
+}
+if (!stripePriceID) {
+  throw new Error("Stripe price ID not found in environment variables");
 }
 
 const stripeClient = new Stripe(stripeSecretKey);
@@ -14,18 +18,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   switch (req.method) {
     case "POST":
       try {
-        const priceId = process.env.PRICE_ID; 
         const token = req.body.token;
-        if (!priceId) {
-          throw new Error("Stripe secret key not found in environment variables");
-        }
-        const price = await stripeClient.prices.retrieve(priceId);
 
         const session = await stripeClient.checkout.sessions.create({
           ui_mode: "embedded",
           line_items: [
             {
-              price: priceId,
+              price: stripePriceID,
               quantity: 1,
             },
           ],

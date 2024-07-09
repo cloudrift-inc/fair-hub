@@ -5,7 +5,7 @@ with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/
 
 1. Run the development server:
     ```bash
-    npm run dev
+    vercel dev
     ```
 2. Start the Fair Compute server (in faircompute repo) to simulate a server machine
     ```bash

@@ -38,6 +38,16 @@ export function getStripeSecretKey(): string {
     }
 }
 
+export function getStripePriceID(): string {
+    if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'production') {
+        return process.env.PROD_STRIPE_PRICE_ID || '';
+    } else if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview') {
+        return process.env.PREVIEW_STRIPE_PRICE_ID || '';
+    } else {
+        return process.env.LOCAL_STRIPE_PRICE_ID || '';
+    }
+}
+
 export function getOmnisendApiKey(): string {
     return process.env.NEXT_PUBLIC_OMNISEND_API_KEY || '';
 }
