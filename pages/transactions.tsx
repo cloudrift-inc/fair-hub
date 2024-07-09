@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import { useMutation } from '@tanstack/react-query';
 import Layout from '../components/Layout';
 import CreditsSection from '../components/CreditsSection';
@@ -62,9 +63,14 @@ const fetchTransactions = async (token: string): Promise<Transaction[]> => {
 };
 
 const BillingPage: React.FC = () => {
+  const router = useRouter();
+  const { type } = router.query;
+
   const [error, setError] = useState<string>("");
   const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [transactionType, setTransactionType] = useState<'stripe' | 'usage'>('stripe');
+  const [transactionType, setTransactionType] = useState<'stripe' | 'usage'>(
+    (type as 'stripe' | 'usage') || 'stripe'
+  );
 
   const mutation = useMutation<Transaction[], Error, string>({
     mutationFn: fetchTransactions,
@@ -86,10 +92,21 @@ const BillingPage: React.FC = () => {
       console.error("No auth token found");
       setError("Please Log In to access this page.");
     }
-  }, []); 
+  }, []);
+
+  useEffect(() => {
+    if (type) {
+      setTransactionType(type as 'stripe' | 'usage');
+    }
+  }, [type]);
 
   const handleTransactionTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setTransactionType(e.target.value as 'stripe' | 'usage');
+    const selectedType = e.target.value as 'stripe' | 'usage';
+    setTransactionType(selectedType);
+    router.push({
+      pathname: router.pathname,
+      query: { type: selectedType },
+    });
   };
 
   const stripeTransactions = transactions.filter((transaction): transaction is StripeTransaction => 'Stripe' in transaction.info);
