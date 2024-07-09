@@ -159,7 +159,7 @@ const UsageTransactionTable: React.FC<UsageTransactionTableProps> = ({ transacti
               </th>
               <th className="py-2 px-4">
                 <div className="flex items-center">
-                  Amount
+                  Amount ($)
                   <button onClick={() => handleSortChange('amount')} className="ml-2">
                     <ArrowDropDownIcon 
                       className={`transition-transform duration-200 ${sortField === 'amount' && sortOrder === 'desc' ? 'rotate-180' : ''}`}
