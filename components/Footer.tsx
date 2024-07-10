@@ -75,9 +75,9 @@ const Footer = () => {
     <div className="flex min-h-screen w-full flex-col bg-linear-gradient text-white" id="contactus">
       <div className="flex flex-1 flex-col px-4 py-8 md:flex-row md:justify-center md:items-center">
         {/* Left Section */}
-        <div className="flex flex-1 justify-end pr-[14rem] pb-24">
-          <div className="flex flex-col space-y-8 md:space-y-12 md:items-start">
-            <div className="space-y-10">
+        <div className="flex flex-1 justify-center sm:justify-end sm:pr-[14rem] pb-24 sm:pb-0">
+          <div className="flex flex-col space-y-8 md:space-y-12 md:items-start items-center sm:items-start">
+            <div className="space-y-10 text-center sm:text-left md:text-left">
               <h2 className="text-4xl font-bold leading-[1.25] md:text-7xl">
                 Let's Talk
               </h2>
@@ -85,11 +85,11 @@ const Footer = () => {
                 Proudly hosted in Research Triangle Park
               </p>
             </div>
-            <div className="space-y-4">
+            <div className="space-y-4 text-center sm:text-left md:text-left">
               <h3 className="text-xl font-semibold">Email</h3>
               <p>support@neuralrack.ai</p>
             </div>
-            <div className="space-y-4">
+            <div className="space-y-4 text-center sm:text-left md:text-left">
               <h3 className="text-xl font-semibold">Socials</h3>
               <p>
                 <Link
@@ -104,7 +104,7 @@ const Footer = () => {
         </div>
 
         {/* Right Section */}
-        <div className="flex flex-1 justify-start pl-24">
+        <div className="flex flex-1 justify-center sm:justify-start sm:pl-24">
           <form className="w-full max-w-md space-y-4" onSubmit={handleSubmit}>
             <div className="flex flex-col space-y-4">
               <h3 className="text-sm">Name</h3>
