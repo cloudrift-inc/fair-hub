@@ -174,7 +174,7 @@ function PopupPanel({ isOpen, onClose, gpuName, price, nodeId, gpus, cpucores, t
                             <input
                                 type="range"
                                 min="0"
-                                max={gpus}
+                                max={avail_gpus}
                                 step="1"
                                 value={gpuQuantity}
                                 onChange={(e) => setGpuQuantity(Number(e.target.value))}

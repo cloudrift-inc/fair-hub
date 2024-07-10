@@ -65,15 +65,12 @@ const GPUInfoDashboard: React.FC<GPUInfoDashboardProps> = ({ currentPage }) => {
         },
         onSuccess: (data) => {
             setNodeInfoList(
-                data.nodes.map((nodeInfo) => ({
-                    ...nodeInfo,
-                    instance: nodeInfo.instance || {
-                        provider: "Unknown",
-                        instance_type: "Unknown",
-                        cost_per_hour: 10,
-                    },
-                    dram: Math.floor(nodeInfo.dram / (1024 * 1024 * 1024)),
-                }))
+                data.nodes
+                    .map((nodeInfo) => ({
+                        ...nodeInfo,
+                        dram: Math.floor(nodeInfo.dram / (1024 * 1024 * 1024)),
+                    }))
+                    .filter(nodeInfo => nodeInfo.cpu.available_core_count > 0)
             );
             setError(null);
         },
@@ -91,21 +88,25 @@ const GPUInfoDashboard: React.FC<GPUInfoDashboardProps> = ({ currentPage }) => {
             className="flex flex-wrap items-start justify-start p-4"
             style={{ rowGap: "28px", columnGap: "22px" }}
         >
-            {nodeInfoList.map((nodeInfo, index) => (
-                <GpuCard
-                    key={index}
-                    title={nodeInfo.gpus.length > 0 ? nodeInfo.gpus[0].brand : "None"}
-                    gpuQuantity={nodeInfo.gpus_available}
-                    cpuCores={nodeInfo.cpu.available_core_count}
-                    totalCpus={nodeInfo.cpu.physical_core_count}
-                    price={`\$${(nodeInfo.instance?.cost_per_hour || 0.0) / 100}/hr`}
-                    ram={nodeInfo.dram}
-                    totalRam={nodeInfo.dram}
-                    nodeId={nodeInfo.id}
-                    currentPage={currentPage}
-                    totalgpus={nodeInfo.gpus.length}
-                />
-            ))}
+            {nodeInfoList.length > 0 ? (
+                nodeInfoList.map((nodeInfo, index) => (
+                    <GpuCard
+                        key={index}
+                        title={nodeInfo.gpus.length > 0 ? nodeInfo.gpus[0].brand : "None"}
+                        gpuQuantity={nodeInfo.gpus_available}
+                        cpuCores={nodeInfo.cpu.available_core_count}
+                        totalCpus={nodeInfo.cpu.physical_core_count}
+                        price={`\$${(nodeInfo.instance?.cost_per_hour || 0.0) / 100}/hr`}
+                        ram={nodeInfo.dram}
+                        totalRam={nodeInfo.dram}
+                        nodeId={nodeInfo.id}
+                        currentPage={currentPage}
+                        totalgpus={nodeInfo.gpus.length}
+                    />
+                ))
+            ) : (
+                <div>No nodes available with GPUs and CPU cores.</div>
+            )}
             {mutation.isError && <div>{error}</div>}
         </div>
     );
