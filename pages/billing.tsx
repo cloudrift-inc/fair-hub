@@ -24,10 +24,8 @@ const Billing: React.FC = () => {
     const token = localStorage.getItem("token") || "";
     if (token) {
       mutation.mutate(token);
-      console.log("Token found:", token);
     } else {
       setError("No auth token found");
-      console.error("No auth token found");
     }
   }, []);
 
@@ -44,11 +42,9 @@ const Billing: React.FC = () => {
     mutationFn: fetchProfileData,
     onSuccess: (data) => {
       setEmail(data.email);
-      console.log("Email set:", data.email);
     },
     onError: (error) => {
       setError(error.message);
-      console.error("Error fetching profile data:", error.message);
     },
   });
 

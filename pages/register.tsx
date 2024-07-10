@@ -22,8 +22,6 @@ interface SignupResponse {
 
 const signup = async (formData: FormData): Promise<SignupResponse> => {
   const apiUrl = getFairApiUrl();
-  console.log("API URL:", apiUrl);
-  console.log("Form Data:", formData);
 
   const response = await fetch(`${apiUrl}/api/v1/users/register`, {
     method: "POST",
@@ -42,17 +40,14 @@ const signup = async (formData: FormData): Promise<SignupResponse> => {
     }),
   });
 
-  console.log("API Response Status:", response.status);
 
   if (response.status === 200) {
     return { success: true, message: "Registration successful!" };
   } else if (response.status === 409) {
     const responseText = await response.text();
-    console.log("API Response Text (409):", responseText);
     throw new Error("User with email already exists.");
   } else {
     const responseText = await response.text();
-    console.log("API Response Text (Error):", responseText);
     throw new Error(responseText || "Failed to register. Please try again.");
   }
 };
@@ -70,24 +65,19 @@ export default function SignupForm() {
   const mutation = useMutation<SignupResponse, Error, FormData>({
     mutationFn: signup,
     onSuccess: (data) => {
-      console.log("Mutation success:", data);
       setSuccessMessage(data.message);
       setErrorMessage(null);
-      console.log("Success Message State:", data.message);
       setTimeout(() => {
         router.push('/login');
       }, 3000);
     },
     onError: (error) => {
-      console.error("Mutation error:", error);
       setErrorMessage(error.message);
       setSuccessMessage(null);
-      console.log("Error Message State:", error.message);
     },
   });
 
   const onSubmit: SubmitHandler<FormData> = (formData) => {
-    console.log("Form Submitted:", formData);
     setErrorMessage(null); // Clear previous error messages
     mutation.mutate(formData);
   };

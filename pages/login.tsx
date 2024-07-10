@@ -61,7 +61,6 @@ export default function LoginForm() {
   const mutation = useMutation<LoginResponse, Error, FormData>({
     mutationFn: login,
     onSuccess: (data) => {
-      console.log("Login successful:", data);
       const token = data.token;
       // Store token in localStorage or sessionStorage
       localStorage.setItem("token", token); // or sessionStorage.setItem("token", token);
