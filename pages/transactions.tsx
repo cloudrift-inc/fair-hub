@@ -75,7 +75,6 @@ const BillingPage: React.FC = () => {
   const mutation = useMutation<Transaction[], Error, string>({
     mutationFn: fetchTransactions,
     onSuccess: (data) => {
-      console.log("Transactions fetched successfully:", data);
       setTransactions(data);
     },
     onError: (error) => {
