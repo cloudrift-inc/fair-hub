@@ -53,7 +53,6 @@ const createExecutor = async (requestData: RequestData) => {
 
     if (!response.ok) {
         let error = await response.text();
-        console.error('API Error:', error);
         throw new Error('Error creating executor: ' + error);
     }
 
@@ -114,7 +113,7 @@ function PopupPanel({ isOpen, onClose, gpuName, price, nodeId, gpus, cpucores, t
         if (showMyPodPanel) {
             const timer = setTimeout(() => {
                 router.push('/pods');
-            }, 2000);
+            }, 1000);
 
             return () => clearTimeout(timer);
         }
@@ -122,10 +121,6 @@ function PopupPanel({ isOpen, onClose, gpuName, price, nodeId, gpus, cpucores, t
 
     if (!isOpen) {
         return null;
-    }
-
-    if (showMyPodPanel && data) {
-        return <MyPodPanel isOpen={isOpen} onClose={onClose} executorId={data.executor_id} />;
     }
 
     if (isRented) {
