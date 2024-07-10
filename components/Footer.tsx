@@ -52,7 +52,6 @@ const Footer = () => {
       const response = await fetch('https://api.omnisend.com/v5/contacts', options);
       if (response.ok) {
         const result = await response.json();
-        console.log(result);
         setSuccessMessage('Message has been sent. We will contact you soon.');
         setErrorMessage('');
         setFormData({
