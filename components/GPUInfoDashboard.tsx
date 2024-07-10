@@ -68,11 +68,6 @@ const GPUInfoDashboard: React.FC<GPUInfoDashboardProps> = ({ currentPage }) => {
                 data.nodes
                     .map((nodeInfo) => ({
                         ...nodeInfo,
-                        instance: nodeInfo.instance || {
-                            provider: "Unknown",
-                            instance_type: "Unknown",
-                            cost_per_hour: 10,
-                        },
                         dram: Math.floor(nodeInfo.dram / (1024 * 1024 * 1024)),
                     }))
                     .filter(nodeInfo => nodeInfo.cpu.available_core_count > 0)
@@ -96,7 +91,7 @@ const GPUInfoDashboard: React.FC<GPUInfoDashboardProps> = ({ currentPage }) => {
             {nodeInfoList.length > 0 ? (
                 nodeInfoList.map((nodeInfo, index) => (
                     <GpuCard
-                        key={index}dd
+                        key={index}
                         title={nodeInfo.gpus.length > 0 ? nodeInfo.gpus[0].brand : "None"}
                         gpuQuantity={nodeInfo.gpus_available}
                         cpuCores={nodeInfo.cpu.available_core_count}
