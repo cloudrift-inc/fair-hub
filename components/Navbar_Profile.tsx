@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import Link from './foundational/Button';
+import Link from './foundational/Link';
 import { useMutation } from "@tanstack/react-query";
 import Button from './foundational/Button';
 import LogoutIcon from '@mui/icons-material/Logout';
