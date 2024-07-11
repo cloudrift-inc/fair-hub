@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "./foundational/Link";
 import { useRouter } from "next/router";
 import React from "react";
 import HomeIcon from "@mui/icons-material/Home";

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useMutation } from "@tanstack/react-query";
-import Link from 'next/link';
+import Link from './foundational/Button';
 import Button from './foundational/Button';
 import { BalanceData, fetchBalance } from "./BalanceFetch";
 
