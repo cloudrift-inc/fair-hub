@@ -20,7 +20,6 @@ const Profile: React.FC = () => {
     const mutation = useMutation<ProfileData, Error, string>({
         mutationFn: fetchProfileData,
         onSuccess: (data) => {
-            console.log("Profile fetched successfully:", data);
             setProfile(data);
         },
         onError: (error) => {

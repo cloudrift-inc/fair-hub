@@ -71,6 +71,14 @@ const BillingPage: React.FC = () => {
   const [transactionType, setTransactionType] = useState<'stripe' | 'usage'>(
     (type as 'stripe' | 'usage') || 'stripe'
   );
+  
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  useEffect(() => {
+    const token = localStorage.getItem("token") || "";
+    if (token) {
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   const mutation = useMutation<Transaction[], Error, string>({
     mutationFn: fetchTransactions,
@@ -113,7 +121,7 @@ const BillingPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#1C1C1C]">
-      <Layout>
+      <Layout isLoggedIn={isLoggedIn}>
         <h1 className="mb-6 text-2xl font-medium text-white">Billing</h1>
         <CreditsSection />
         <div className="flex items-center mb-6">

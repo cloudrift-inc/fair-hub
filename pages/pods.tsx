@@ -1,29 +1,29 @@
-import '../app/globals.css';
-import type { NextPage } from "next";
-import React from 'react';
-import MyPodsDashboard from '../components/MyPodsDashboard';
-import SidebarMyPods from '../components/SideBarMyPods';
-import ConsoleHeader from '../components/ConsoleHeader';
+import React , { useEffect, useState } from "react";
+import Layout from "../components/Layout";
+import MyPodsDashboard from "@/components/MyPodsDashboard";
+import AvailableCredits from "@/components/AvailableCredits";
+import "../app/globals.css";
 
-const ConsoleRenting: NextPage = () => {
+const MyPods: React.FC = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  useEffect(() => {
+    const token = localStorage.getItem("token") || "";
+    if (token) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
   return (
-    <div className="relative w-full bg-[#1C1C1C] min-h-screen overflow-hidden text-left text-sm text-white">
-        <ConsoleHeader />
-      <b className="absolute top-[115px] left-[305px] text-lg inline-block">
-        My Pods
-        </b>
-        <div className="flex flex-row">
-        <div className=" border-gray-100">
-          <nav>
-            <SidebarMyPods />
-          </nav>
-          <div className="relative pt-10 sm:pt-40 mt-10 md:ml-[284px] md:mt-3 ">
-            <MyPodsDashboard />
-          </div>
+    <div className="min-h-screen bg-[#1C1C1C]">
+      <Layout isLoggedIn={isLoggedIn}>
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-2xl font-medium text-white">My Pods</h1>
+          <AvailableCredits />
         </div>
-        </div>
-      </div>
+        <MyPodsDashboard />
+      </Layout>
+    </div>
   );
 };
 
-export default ConsoleRenting;
+export default MyPods;

@@ -2,39 +2,35 @@
 import type { NextPage } from "next";
 import React, { useEffect, useState } from 'react';
 import '../app/globals.css';
-import GPUInfoDashboard from '../components/GPUInfoDashboard';
-import SidebarConsole from '../components/SidebarConsole';
-import SidebarMyPods from '../components/SideBarMyPods';
-import ConsoleHeader from '../components/ConsoleHeader';
+import Layout from "@/components/Layout";
+import GPUInfoDashboard from "../components/GPUInfoDashboard";
+import AvailableCredits from "@/components/AvailableCredits";
+
 
 const ConsolePage: NextPage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   useEffect(() => {
     const token = localStorage.getItem("token") || "";
     if (token) {
+      console.log(token);
       setIsLoggedIn(true);
     }
   }, []);
-
+  console.log(isLoggedIn);
+  
   return (
 
-    <div className="relative w-full bg-[#1C1C1C] min-h-screen overflow-hidden text-left text-sm text-white font-robuous">
-      <ConsoleHeader />
-      <b className="absolute top-[115px] left-[305px] text-lg inline-block">
-        GPU Search Console
-      </b>
-      <div className="flex flex-row">
-        <div className="border-gray-100">
-          <nav>
-          {isLoggedIn ? <SidebarMyPods /> : <SidebarConsole />}
-          </nav>
-          <div className="relative pt-10 sm:pt-40 mt-10 md:ml-[284px] md:mt-3">
-            {isLoggedIn ? <GPUInfoDashboard currentPage="console_login" /> : <GPUInfoDashboard currentPage="console" />}
-          </div>
+     <div className="min-h-screen bg-[#1C1C1C]">
+      <Layout isLoggedIn={isLoggedIn}>
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-2xl font-medium text-white">GPU Search Console</h1>
+          <AvailableCredits />
         </div>
-      </div>
+        {isLoggedIn ? <GPUInfoDashboard currentPage="console_login" /> : <GPUInfoDashboard currentPage="console" />}
+      </Layout>
     </div>
   );
 };
 
 export default ConsolePage;
+

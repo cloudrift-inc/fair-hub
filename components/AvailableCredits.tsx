@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { useMutation } from "@tanstack/react-query";
 import Link from './foundational/Link';
+import { useMutation } from "@tanstack/react-query";
 import Button from './foundational/Button';
 import { BalanceData, fetchBalance } from "./BalanceFetch";
 
-const CreditsSection: React.FC = () => {
+const AvailableCredits: React.FC = () => {
   const [credit, setCredit] = useState(0);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [balance, setBalance] = useState<BalanceData | null>(null);
   const [error, setError] = useState<string>("");
 
   const fetchBalanceData = async (token: string): Promise<BalanceData> => {
@@ -19,16 +21,19 @@ const CreditsSection: React.FC = () => {
   const balanceMutation = useMutation<BalanceData, Error, string>({
     mutationFn: fetchBalanceData,
     onSuccess: (data) => {
+      setBalance(data);
       setCredit(data.balance / 100);
     },
     onError: (error) => {
       setError(error.message);
+      console.error("Error fetching balance:", error);
     },
   });
 
   useEffect(() => {
     const token = localStorage.getItem("token") || "";
     if (token) {
+      setIsLoggedIn(true);
       balanceMutation.mutate(token);
 
       const interval = setInterval(() => {
@@ -40,17 +45,17 @@ const CreditsSection: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex justify-between items-center p-6 mb-6 mx-auto rounded-lg bg-[#111111] bg-grain shadow-md">
-      <div>
-        <h2 className="text-2xl font-medium">Credit Balance: ${credit}</h2>
-      </div>
-      <Link href="/billing">
-        <Button className="rounded-lg bg-[#191970] py-2 px-5 font-bold text-md">
-          Add Credit
-        </Button>
-      </Link>
+    <div className="flex items-center space-x-4">
+      <b className="text-sm inline-block">Available Credit: ${isLoggedIn ? credit : 0}</b>
+      {isLoggedIn && (
+        <Link href="/billing">
+          <Button className="rounded-full bg-[#191970] py-2 px-4 font-bold text-sm">
+            Add Credits
+          </Button>
+        </Link>
+      )}
     </div>
   );
 };
 
-export default CreditsSection;
+export default AvailableCredits;
