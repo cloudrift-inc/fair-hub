@@ -12,16 +12,18 @@ const ConsolePage: NextPage = () => {
   useEffect(() => {
     const token = localStorage.getItem("token") || "";
     if (token) {
+      console.log(token);
       setIsLoggedIn(true);
     }
   }, []);
-
+  console.log(isLoggedIn);
+  
   return (
 
      <div className="min-h-screen bg-[#1C1C1C]">
-      <Layout>
+      <Layout isLoggedIn={isLoggedIn}>
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-medium text-white">Console</h1>
+          <h1 className="text-2xl font-medium text-white">GPU Search Console</h1>
           <AvailableCredits />
         </div>
         {isLoggedIn ? <GPUInfoDashboard currentPage="console_login" /> : <GPUInfoDashboard currentPage="console" />}
