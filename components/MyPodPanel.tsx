@@ -63,6 +63,7 @@ function MyPodPanel({ isOpen, onClose , executorId}: MyPodPanelProps) {
           <h1 className="mb-2 text-lg font-extrabold text-white">Instructions</h1>
 
           <div className="flex items-center mb-2">
+            <p>
             1. Install&nbsp;
             <a className="text-blue-400 underline"
                target="_blank"
@@ -71,6 +72,7 @@ function MyPodPanel({ isOpen, onClose , executorId}: MyPodPanelProps) {
               Fair CLI
             </a>&nbsp;
             and run the following commands in your terminal
+            </p>
           </div>
 
           <div className="flex items-center mb-2">2. Configure credentials if running Fair CLI for the first time</div>
