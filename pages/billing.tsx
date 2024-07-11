@@ -26,6 +26,7 @@ const Billing: React.FC = () => {
       mutation.mutate(token);
     } else {
       setError("No auth token found");
+      console.error("No auth token found");
     }
   }, []);
 
@@ -45,6 +46,7 @@ const Billing: React.FC = () => {
     },
     onError: (error) => {
       setError(error.message);
+      console.error("Error fetching profile data:", error.message);
     },
   });
 

@@ -2,9 +2,6 @@ import React from "react";
 import Layout from "../components/Layout";
 import Profile from "../components/Profile";
 import "../app/globals.css";
-import NotificationSettings from "../components/Notification";
-import LoginSettings from "../components/LoginSettings";
-import APIKeys from "../components/APIKeys";
 
 const SettingsPage: React.FC = () => {
   return (

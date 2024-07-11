@@ -55,13 +55,13 @@ function countBits(hexString: string): number {
   return bitCount;
 }
 
-const fetchExecutors = async (): Promise<ListExecutorsResponse> => {
+const fetchExecutors = async (token: string): Promise<ListExecutorsResponse> => {
   const apiUrl = getFairApiUrl();
   const response = await fetch(`${apiUrl}/api/v1/executors/list`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": "Bearer " + localStorage.getItem("token")
+      "Authorization": `Bearer ${token}`
         },
     body: JSON.stringify({
       "version": FAIR_API_VERSION,
@@ -81,7 +81,7 @@ const MyPodsDashboard: React.FC = () => {
   const [executorInfoList, setExecutorInfoList] = useState<ExecutorAndUsageInfo[]>([]);
   const [error, setError] = useState<string | null>(null);
 
-  const mutation = useMutation<ListExecutorsResponse, Error>({
+  const mutation = useMutation<ListExecutorsResponse, Error, string>({
     mutationFn: fetchExecutors,
     onSuccess: (data) => {
       setExecutorInfoList(data.executors || []);
@@ -92,10 +92,16 @@ const MyPodsDashboard: React.FC = () => {
     },
   });
 
-  useEffect(() => {
-    mutation.mutate();
-  }, []);
 
+    useEffect(() => {
+        const token = localStorage.getItem("token") || "";
+        if (token) {
+            mutation.mutate(token);
+        } else {
+            console.error("No auth token found");
+            setError("Please Log In to access this page.");
+        }
+    }, []);
   return (
     <div
       className="flex flex-wrap items-start justify-start p-4"
