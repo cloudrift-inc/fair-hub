@@ -2,12 +2,7 @@ import * as React from "react";
 import { useMutation } from '@tanstack/react-query';
 import '../app/globals.css';
 import { useRouter } from 'next/router';
-import MyPodPanel from './MyPodPanel'; // Adjust the import path if necessary
-import {
-    FAIR_API_VERSION,
-    getFairProviderPubApiKey,
-    getFairApiUrl,
-} from '@/lib/faircompute';
+import { FAIR_API_VERSION, apiRequest } from "@/lib/faircompute";
 
 interface RequestData {
     node_id: string;
@@ -36,30 +31,21 @@ interface PopupPanelProps {
     avail_gpus: number;
 }
 
-const createExecutor = async (requestData: RequestData) => {
-    const apiUrl = getFairApiUrl();
-    const response = await fetch(`${apiUrl}/api/v1/marketplace/providers/nodes/rent`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            "X-API-Key": getFairProviderPubApiKey(),
-            "Authorization": "Bearer " + localStorage.getItem("token")
-        },
-        body: JSON.stringify({
-            "version": FAIR_API_VERSION,
-            "data": requestData,
-        })
-    });
-
-    if (!response.ok) {
-        let error = await response.text();
-        throw new Error('Error creating executor: ' + error);
+export const createExecutor = async (requestData: RequestData): Promise<ResponseData> => {
+    const data = {
+      version: FAIR_API_VERSION,
+      data: requestData,
+    };
+  
+    const response = await apiRequest<{ data: ResponseData }>("/api/v1/marketplace/providers/nodes/rent", "POST", true, true, data);
+  
+    if (!response || !response.data) {
+      throw new Error("Invalid response structure: " + JSON.stringify(response));
     }
-
-    const data = await response.json();
-    return data["data"];
-};
-
+  
+    return response.data;
+  };
+  
 const useCreateExecutor = () => {
     return useMutation<ResponseData, Error, RequestData>({
         mutationFn: createExecutor,

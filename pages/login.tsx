@@ -7,7 +7,7 @@ import Image from "next/image";
 import Button from "../components/foundational/Button";
 import Link from "../components/foundational/Link";
 import { useRouter } from 'next/router'
-import {FAIR_API_VERSION, getFairApiUrl} from "../lib/faircompute";
+import { apiRequest, FAIR_API_VERSION } from "@/lib/faircompute";
 
 
 interface FormData {
@@ -23,30 +23,22 @@ interface LoginResponse {
   };
 }
 
-const login = async (formData: FormData): Promise<LoginResponse> => {
-  const apiUrl = getFairApiUrl();
-  const response = await fetch(`${apiUrl}/api/v1/auth/login`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
+export const login = async (formData: FormData): Promise<LoginResponse> => {
+  const requestData = {
+    version: FAIR_API_VERSION,
+    data: {
+      email: formData.email,
+      password: formData.password,
     },
-    body: JSON.stringify({
-      version: FAIR_API_VERSION,
-      data: {
-        email: formData.email,
-        password: formData.password,
-      },
-    }),
-  });
+  };
 
-  if (!response.ok) {
-    throw new Error(
-      "Failed to login. Please check your credentials and try again.",
-    );
+  const response = await apiRequest<{ data: LoginResponse }>("/api/v1/auth/login", "POST", true, false, requestData);
+
+  if (!response || !response.data) {
+    throw new Error("Invalid response structure: " + JSON.stringify(response));
   }
 
-  const responseData = await response.json();
-  return responseData.data;
+  return response.data;
 };
 
 export default function LoginForm() {

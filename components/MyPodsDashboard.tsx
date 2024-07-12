@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
 import MyPodsCard from './MyPodsCard';
-import {FAIR_API_VERSION, getFairApiUrl} from "@/lib/faircompute";
+import { apiRequest, FAIR_API_VERSION } from "@/lib/faircompute";
 
 interface ExecutorResourceInfo {
   provider_name: string;
@@ -55,26 +55,19 @@ function countBits(hexString: string): number {
   return bitCount;
 }
 
-const fetchExecutors = async (token: string): Promise<ListExecutorsResponse> => {
-  const apiUrl = getFairApiUrl();
-  const response = await fetch(`${apiUrl}/api/v1/executors/list`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${token}`
-        },
-    body: JSON.stringify({
-      "version": FAIR_API_VERSION,
-      "data": { all: false },
-    })
-  });
+export const fetchExecutors = async (token: string): Promise<ListExecutorsResponse> => {
+  const requestData = {
+    version: FAIR_API_VERSION,
+    data: { all: false }
+  };
 
-  if (!response.ok) {
-    throw new Error("Error fetching executors: " + response.statusText);
+  const response = await apiRequest<{ data: ListExecutorsResponse }>("/api/v1/executors/list", "POST", true, true, requestData);
+
+  if (!response || !response.data || !response.data.executors) {
+    throw new Error("Invalid response structure: " + JSON.stringify(response));
   }
 
-  const data = await response.json();
-  return data['data'];
+  return response.data;
 };
 
 const MyPodsDashboard: React.FC = () => {
