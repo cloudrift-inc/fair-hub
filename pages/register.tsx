@@ -32,7 +32,7 @@ export const signup = async (formData: FormData): Promise<SignupResponse> => {
   };
 
   try {
-    await apiRequest<void>("/api/v1/users/register", "POST", requestData);
+    await apiRequest<void>("/api/v1/users/register", "POST", true, false, requestData);
     return { success: true, message: "Registration successful!" };
   } catch (error: any) {
     if (error.message.includes("409")) {
