@@ -48,7 +48,7 @@ const Pricing: React.FC = () => {
         <h1 className="mb-8 text-5xl text-center font-bold text-white sm:text-4xl md:text-5xl">Simple and Flexible Pricing</h1>
         <div className="flex flex-wrap items-center justify-center gap-8">
           {pricingPlans.map((plan, index) => (
-            <div className={index === 1 ? "rounded-lg bg-white p-[1px]" : ""} key={plan.id}>
+            <div className={index === 0 ? "rounded-lg bg-white p-[1px]" : ""} key={plan.id}>
               <GPURentalCard
                 name={plan.name}
                 price={plan.price}
