@@ -14,11 +14,9 @@ const ConsolePage: NextPage = () => {
   useEffect(() => {
     const token = localStorage.getItem("token") || "";
     if (token) {
-      console.log(token);
       setIsLoggedIn(true);
     }
   }, []);
-  console.log(isLoggedIn);
   
   return (
      <div className="min-h-screen bg-[#1C1C1C]">

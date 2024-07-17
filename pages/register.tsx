@@ -7,9 +7,8 @@ import Image from "next/image";
 import Button from "../components/foundational/Button";
 import Link from "../components/foundational/Link";
 import { useRouter } from 'next/router';
-import {FAIR_API_VERSION, getFairProviderPubApiKey, getFairApiUrl} from "@/lib/faircompute";
+import { apiRequest } from "@/lib/faircompute";
 import { PageTitle } from '../components/PageTitle';
-
 
 interface FormData {
   username: string;
@@ -22,35 +21,20 @@ interface SignupResponse {
   message: string;
 }
 
-const signup = async (formData: FormData): Promise<SignupResponse> => {
-  const apiUrl = getFairApiUrl();
+export const signup = async (formData: FormData): Promise<SignupResponse> => {
+  const requestData = {
+      name: formData.username,
+      email: formData.email,
+      password: formData.password,
+      invite_code: null,
+  };
 
-  const response = await fetch(`${apiUrl}/api/v1/users/register`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-API-Key": getFairProviderPubApiKey(),
-    },
-    body: JSON.stringify({
-      version: FAIR_API_VERSION,
-      data: {
-        name: formData.username,
-        email: formData.email,
-        password: formData.password,
-        invite_code: null,
-      },
-    }),
-  });
-
-
-  if (response.status === 200) {
+  try {
+    await apiRequest<void>("/api/v1/users/register", false, requestData);
     return { success: true, message: "Registration successful!" };
-  } else if (response.status === 409) {
-    const responseText = await response.text();
-    throw new Error("User with email already exists.");
-  } else {
-    const responseText = await response.text();
-    throw new Error(responseText || "Failed to register. Please try again.");
+  } 
+  catch (error: any) {
+      throw new Error(error.message || "Failed to register. Please try again.");
   }
 };
 

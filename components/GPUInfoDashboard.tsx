@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import GpuCard from "./GpuCard";
 import { useMutation } from "@tanstack/react-query";
-import { getFairProviderPubApiKey, getFairApiUrl } from "@/lib/faircompute";
+import { apiRequest } from "@/lib/faircompute";
 
 interface NodeInfoResponse {
     instance?: {
@@ -37,22 +37,11 @@ interface GPUInfoDashboardProps {
 }
 
 const fetchNodeIds = async (): Promise<ListNodesResponse> => {
-    const apiUrl = getFairApiUrl();
-    const response = await fetch(`${apiUrl}/api/v1/marketplace/providers/nodes/list`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "X-API-Key": getFairProviderPubApiKey(),
-            "Authorization": "Bearer " + localStorage.getItem("token")
-        },
-    });
+    const requestData = {}; // If there is any specific request data, add here.
 
-    if (!response.ok) {
-        throw new Error("Error fetching node IDs: " + response.statusText);
-    }
+    const response = await apiRequest<{ data: ListNodesResponse }>("/api/v1/marketplace/providers/nodes/list", true, requestData);
 
-    const data = await response.json();
-    return data["data"];
+    return response.data;
 };
 
 const GPUInfoDashboard: React.FC<GPUInfoDashboardProps> = ({ currentPage }) => {
