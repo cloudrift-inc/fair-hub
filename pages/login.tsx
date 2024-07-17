@@ -8,6 +8,8 @@ import Button from "../components/foundational/Button";
 import Link from "../components/foundational/Link";
 import { useRouter } from 'next/router'
 import { apiRequest } from "@/lib/faircompute";
+import { PageTitle } from '../components/PageTitle';
+
 
 
 interface FormData {
@@ -68,6 +70,7 @@ export default function LoginForm() {
 
   return (
     <div className="flex min-h-screen flex-col bg-linear-gradient md:flex-row">
+      <PageTitle />
       <div className="flex flex-1 flex-col items-center justify-center md:items-center md:justify-center">
         <Image
           src="/logo1.png"

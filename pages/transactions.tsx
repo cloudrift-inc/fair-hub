@@ -8,6 +8,8 @@ import StripeTransactionTable from '../components/StripeTransactionTable';
 import UsageTransactionTable from '../components/UsageTransactionTable';
 import '../app/globals.css';
 import { FAIR_API_VERSION, getFairProviderPubApiKey, getFairApiUrl } from "../lib/faircompute";
+import { PageTitle } from '../components/PageTitle';
+
 
 interface StripeTransaction {
   created_at: string;
@@ -121,6 +123,8 @@ const BillingPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#1C1C1C]">
+      <PageTitle />
+
       <Layout isLoggedIn={isLoggedIn}>
         <h1 className="mb-6 text-2xl font-medium text-white">Billing</h1>
         <CreditsSection />

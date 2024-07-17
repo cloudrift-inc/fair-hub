@@ -10,6 +10,7 @@ import "../app/globals.css";
 import { fetchProfile } from "../components/ProfileFetch";
 import { useMutation } from "@tanstack/react-query";
 import { getStripePublishableKey } from "@/lib/faircompute";
+import { PageTitle } from '../components/PageTitle';
 
 interface ProfileData {
   email: string;
@@ -85,6 +86,8 @@ const Billing: React.FC = () => {
 
   return (
     <div id="checkout" className="min-h-screen bg-[#191970]">
+      <PageTitle />
+
       <EmbeddedCheckoutProvider stripe={stripePromise} options={options }>
         <div className="pt-12">
           <EmbeddedCheckout />
