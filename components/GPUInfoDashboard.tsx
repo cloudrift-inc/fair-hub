@@ -41,10 +41,6 @@ const fetchNodeIds = async (): Promise<ListNodesResponse> => {
 
     const response = await apiRequest<{ data: ListNodesResponse }>("/api/v1/marketplace/providers/nodes/list", true, true, requestData);
 
-    // if (!response || !response.data || !response.data.nodes) {
-    //     throw new Error("Invalid response structure: " + JSON.stringify(response));
-    // }
-
     return response.data;
 };
 

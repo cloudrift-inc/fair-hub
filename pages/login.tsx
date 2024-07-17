@@ -31,9 +31,6 @@ export const login = async (formData: FormData): Promise<LoginResponse> => {
 
   const response = await apiRequest<{ data: LoginResponse }>("/api/v1/auth/login", true, false,  requestData);
 
-  if (!response || !response.data) {
-    throw new Error("Invalid response structure: " + JSON.stringify(response));
-  }
   return response.data;
 };
 

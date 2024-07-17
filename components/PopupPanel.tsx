@@ -36,9 +36,7 @@ export const createExecutor = async (requestData: RequestData): Promise<Response
   
     const response = await apiRequest<{ data: ResponseData }>("/api/v1/marketplace/providers/nodes/rent", true, true, data);
   
-    if (!response || !response.data) {
-      throw new Error("Invalid response structure: " + JSON.stringify(response));
-    }
+    
     return response.data;
   };
   
