@@ -9,9 +9,11 @@ export async function apiRequest<T>(endpoint: string, token:boolean,  requestDat
         headers["Authorization"] = "Bearer " + localStorage.getItem("token");
     }
 
-    const body: any = { data: requestData || {} };
-    
-    body.version = FAIR_API_VERSION;
+    const body: any = {};
+    if (requestData) {
+        body.data = requestData;
+        body.version = FAIR_API_VERSION;
+    }
 
     const response = await fetch(`${apiUrl}${endpoint}`, {
         method,
@@ -20,24 +22,20 @@ export async function apiRequest<T>(endpoint: string, token:boolean,  requestDat
     });
 
     const textResponse = await response.text();
-    if (!textResponse) {
-        if (!response.ok) {
-            throw new Error(`API call failed with status code: ${response.status}`);
-          }
-        return {} as T; 
-    }
 
-    let jsonResponse;
-    try {
-        jsonResponse = JSON.parse(textResponse);
-    } catch (error) {
-        throw new Error(`Failed to parse response JSON. Status code: ${response.status}, response: ${textResponse}`);
+    let jsonResponse: any = {};
+    if (textResponse.length > 0) {
+        try {
+            jsonResponse = JSON.parse(textResponse);
+        } catch (error) {
+            throw new Error(`Failed to parse response JSON. Status code: ${response.status}, response: ${textResponse}`);
+        }
     }
 
     if (!response.ok) {
-        let errorMessage = `Failed to fetch data. Status code: ${response.status}`;
+        let errorMessage = `API call failed with status code: ${response.status}`;
         if (jsonResponse && jsonResponse.message) {
-        errorMessage += `, Error message: ${jsonResponse.message}`;
+            errorMessage += `, Error message: ${jsonResponse.message}`;
         }
         throw new Error(errorMessage);
     }
@@ -48,7 +46,9 @@ export async function apiRequest<T>(endpoint: string, token:boolean,  requestDat
 export function getFairApiUrl(): string {
     if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'production') {
         return process.env.NEXT_PUBLIC_PROD_FAIR_API_URL || '';
-    } else {
+    } else if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview') {
+        return process.env.NEXT_PUBLIC_PREVIEW_FAIR_API_URL || '';
+    }else {
         return process.env.NEXT_PUBLIC_LOCAL_FAIR_API_URL || '';
     }
 }
