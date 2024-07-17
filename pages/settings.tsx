@@ -2,6 +2,8 @@ import React , { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import Profile from "../components/Profile";
 import "../app/globals.css";
+import { PageTitle } from '../components/PageTitle';
+
 
 const SettingsPage: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -13,6 +15,8 @@ const SettingsPage: React.FC = () => {
   }, []);
   return (
     <div className="min-h-screen bg-[#1C1C1C]">
+      <PageTitle />
+
       <Layout isLoggedIn={isLoggedIn}>
         <h1 className="mb-6 text-2xl font-medium text-white">
           Settings and Profile
