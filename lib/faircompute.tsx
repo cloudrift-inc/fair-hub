@@ -1,15 +1,12 @@
-export async function apiRequest<T>(endpoint: string, api:boolean, token:boolean,  requestData?: any): Promise<T> {
+export async function apiRequest<T>(endpoint: string, token:boolean,  requestData?: any): Promise<T> {
     const apiUrl = getFairApiUrl();
     const method="POST";
     const headers: HeadersInit = {
         "Content-Type": "application/json",
+        "X-API-Key": getFairProviderPubApiKey(),
     };
     if (token){
         headers["Authorization"] = "Bearer " + localStorage.getItem("token");
-    }
-
-    if(api){
-        headers["X-API-Key"] = getFairProviderPubApiKey();
     }
 
     const body: any = { data: requestData || {} };
@@ -29,6 +26,7 @@ export async function apiRequest<T>(endpoint: string, api:boolean, token:boolean
           }
         return {} as T; 
     }
+
     let jsonResponse;
     try {
         jsonResponse = JSON.parse(textResponse);
@@ -44,9 +42,7 @@ export async function apiRequest<T>(endpoint: string, api:boolean, token:boolean
         throw new Error(errorMessage);
     }
 
-    // Return the parsed JSON response if data is present, otherwise return an empty object
     return jsonResponse.data ? jsonResponse : ({} as T);
-
 }
 
 export function getFairApiUrl(): string {

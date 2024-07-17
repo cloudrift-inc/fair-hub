@@ -58,7 +58,7 @@ function countBits(hexString: string): number {
 export const fetchExecutors = async (token: string): Promise<ListExecutorsResponse> => {
   const requestData = {all: false };
 
-  const response = await apiRequest<{ data: ListExecutorsResponse }>("/api/v1/executors/list", true, true,  requestData);
+  const response = await apiRequest<{ data: ListExecutorsResponse }>("/api/v1/executors/list", true,  requestData);
 
   return response.data;
 };

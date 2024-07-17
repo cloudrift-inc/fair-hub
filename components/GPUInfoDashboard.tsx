@@ -39,7 +39,7 @@ interface GPUInfoDashboardProps {
 const fetchNodeIds = async (): Promise<ListNodesResponse> => {
     const requestData = {}; // If there is any specific request data, add here.
 
-    const response = await apiRequest<{ data: ListNodesResponse }>("/api/v1/marketplace/providers/nodes/list", true, true, requestData);
+    const response = await apiRequest<{ data: ListNodesResponse }>("/api/v1/marketplace/providers/nodes/list", true, requestData);
 
     return response.data;
 };

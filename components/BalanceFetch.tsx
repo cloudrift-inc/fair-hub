@@ -6,7 +6,7 @@ export interface BalanceData {
 
 export const fetchBalance = async (token: string): Promise<BalanceData> => {
 
-const response = await apiRequest<{ data: BalanceData }>("/api/v1/account/info", true, true,{});
+const response = await apiRequest<{ data: BalanceData }>("/api/v1/account/info", true,{});
     return {
         balance: response.data.balance
     };

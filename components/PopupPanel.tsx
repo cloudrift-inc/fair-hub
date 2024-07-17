@@ -34,7 +34,7 @@ interface PopupPanelProps {
 export const createExecutor = async (requestData: RequestData): Promise<ResponseData> => {
     const data = requestData;
   
-    const response = await apiRequest<{ data: ResponseData }>("/api/v1/marketplace/providers/nodes/rent", true, true, data);
+    const response = await apiRequest<{ data: ResponseData }>("/api/v1/marketplace/providers/nodes/rent", true, data);
     return response.data;
   };
   

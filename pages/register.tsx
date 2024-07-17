@@ -29,10 +29,10 @@ export const signup = async (formData: FormData): Promise<SignupResponse> => {
   };
 
   try {
-    await apiRequest<void>("/api/v1/users/register", true, false, requestData);
+    await apiRequest<void>("/api/v1/users/register", false, requestData);
     return { success: true, message: "Registration successful!" };
-  } catch (error: any) {
-      console.log(error)
+  } 
+  catch (error: any) {
       throw new Error(error.message || "Failed to register. Please try again.");
   }
 };

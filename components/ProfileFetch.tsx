@@ -6,10 +6,8 @@ export interface ProfileData {
 }
 
 export const fetchProfile = async (token: string): Promise<ProfileData> => {
-  
-    const response = await apiRequest<{ data: ProfileData }>(
-      "/api/v1/auth/me",true, true,{});
-  
+    const response = await apiRequest<{ data: ProfileData }>("/api/v1/auth/me", true,{});
+
     return {
       name: response.data.name,
       email: response.data.email,

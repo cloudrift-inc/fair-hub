@@ -29,7 +29,7 @@ export const login = async (formData: FormData): Promise<LoginResponse> => {
       password: formData.password,
   };
 
-  const response = await apiRequest<{ data: LoginResponse }>("/api/v1/auth/login", true, false,  requestData);
+  const response = await apiRequest<{ data: LoginResponse }>("/api/v1/auth/login", false,  requestData);
 
   return response.data;
 };
