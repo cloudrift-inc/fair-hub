@@ -20,8 +20,23 @@ export async function apiRequest<T>(endpoint: string, token:boolean,  requestDat
         headers,
         body: JSON.stringify(body),
     });
-
+    
     const textResponse = await response.text();
+
+    if (!response.ok) {
+        let errorMessage = `API call failed with status code: ${response.status}`;
+        if (textResponse.length > 0) {
+            try {
+                const errorJson = JSON.parse(textResponse);
+                if (errorJson && errorJson.message) {
+                    errorMessage += `, Error message: ${errorJson.message}`;
+                }
+            } catch {
+                errorMessage += `, Response: ${textResponse}`;
+            }
+        }
+        throw new Error(errorMessage);
+    }
 
     let jsonResponse: any = {};
     if (textResponse.length > 0) {
@@ -30,14 +45,6 @@ export async function apiRequest<T>(endpoint: string, token:boolean,  requestDat
         } catch (error) {
             throw new Error(`Failed to parse response JSON. Status code: ${response.status}, response: ${textResponse}`);
         }
-    }
-
-    if (!response.ok) {
-        let errorMessage = `API call failed with status code: ${response.status}`;
-        if (jsonResponse && jsonResponse.message) {
-            errorMessage += `, Error message: ${jsonResponse.message}`;
-        }
-        throw new Error(errorMessage);
     }
 
     return jsonResponse.data ? jsonResponse : ({} as T);
