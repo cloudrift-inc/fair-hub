@@ -7,7 +7,7 @@ import Image from "next/image";
 import Button from "../components/foundational/Button";
 import Link from "../components/foundational/Link";
 import { useRouter } from 'next/router'
-import { apiRequest, FAIR_API_VERSION } from "@/lib/faircompute";
+import { apiRequest } from "@/lib/faircompute";
 
 
 interface FormData {
@@ -25,19 +25,15 @@ interface LoginResponse {
 
 export const login = async (formData: FormData): Promise<LoginResponse> => {
   const requestData = {
-    version: FAIR_API_VERSION,
-    data: {
       email: formData.email,
       password: formData.password,
-    },
   };
 
-  const response = await apiRequest<{ data: LoginResponse }>("/api/v1/auth/login", "POST", true, false, requestData);
+  const response = await apiRequest<{ data: LoginResponse }>("/api/v1/auth/login", "POST", true, false, true, requestData);
 
   if (!response || !response.data) {
     throw new Error("Invalid response structure: " + JSON.stringify(response));
   }
-
   return response.data;
 };
 

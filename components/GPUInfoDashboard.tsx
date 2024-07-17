@@ -39,13 +39,12 @@ interface GPUInfoDashboardProps {
 const fetchNodeIds = async (): Promise<ListNodesResponse> => {
     const requestData = {}; // If there is any specific request data, add here.
 
-    const response = await apiRequest<{ data: ListNodesResponse }>("/api/v1/marketplace/providers/nodes/list", "POST",true, true, requestData);
+    const response = await apiRequest<{ data: ListNodesResponse }>("/api/v1/marketplace/providers/nodes/list", "POST",true, true, true, requestData);
 
     if (!response || !response.data || !response.data.nodes) {
         throw new Error("Invalid response structure: " + JSON.stringify(response));
     }
 
-    console.log(response)
     return response.data;
 };
 

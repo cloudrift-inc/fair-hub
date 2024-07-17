@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
 import MyPodsCard from './MyPodsCard';
-import { apiRequest, FAIR_API_VERSION } from "@/lib/faircompute";
+import { apiRequest } from "@/lib/faircompute";
 
 interface ExecutorResourceInfo {
   provider_name: string;
@@ -56,12 +56,9 @@ function countBits(hexString: string): number {
 }
 
 export const fetchExecutors = async (token: string): Promise<ListExecutorsResponse> => {
-  const requestData = {
-    version: FAIR_API_VERSION,
-    data: { all: false }
-  };
+  const requestData = {all: false };
 
-  const response = await apiRequest<{ data: ListExecutorsResponse }>("/api/v1/executors/list", "POST", true, true, requestData);
+  const response = await apiRequest<{ data: ListExecutorsResponse }>("/api/v1/executors/list", "POST", true, true, true, requestData);
 
   if (!response || !response.data || !response.data.executors) {
     throw new Error("Invalid response structure: " + JSON.stringify(response));

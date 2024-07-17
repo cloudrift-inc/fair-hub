@@ -7,7 +7,7 @@ import Image from "next/image";
 import Button from "../components/foundational/Button";
 import Link from "../components/foundational/Link";
 import { useRouter } from 'next/router';
-import { apiRequest, FAIR_API_VERSION } from "@/lib/faircompute";
+import { apiRequest } from "@/lib/faircompute";
 
 interface FormData {
   username: string;
@@ -22,17 +22,14 @@ interface SignupResponse {
 
 export const signup = async (formData: FormData): Promise<SignupResponse> => {
   const requestData = {
-    version: FAIR_API_VERSION,
-    data: {
       name: formData.username,
       email: formData.email,
       password: formData.password,
       invite_code: null,
-    },
   };
 
   try {
-    await apiRequest<void>("/api/v1/users/register", "POST", true, false, requestData);
+    await apiRequest<void>("/api/v1/users/register", "POST", true, false, true, requestData);
     return { success: true, message: "Registration successful!" };
   } catch (error: any) {
     if (error.message.includes("409")) {

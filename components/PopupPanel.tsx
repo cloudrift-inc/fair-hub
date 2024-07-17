@@ -2,7 +2,7 @@ import * as React from "react";
 import { useMutation } from '@tanstack/react-query';
 import '../app/globals.css';
 import { useRouter } from 'next/router';
-import { FAIR_API_VERSION, apiRequest } from "@/lib/faircompute";
+import { apiRequest } from "@/lib/faircompute";
 
 interface RequestData {
     node_id: string;
@@ -32,17 +32,13 @@ interface PopupPanelProps {
 }
 
 export const createExecutor = async (requestData: RequestData): Promise<ResponseData> => {
-    const data = {
-      version: FAIR_API_VERSION,
-      data: requestData,
-    };
+    const data = requestData;
   
-    const response = await apiRequest<{ data: ResponseData }>("/api/v1/marketplace/providers/nodes/rent", "POST", true, true, data);
+    const response = await apiRequest<{ data: ResponseData }>("/api/v1/marketplace/providers/nodes/rent", "POST", true, true, true, data);
   
     if (!response || !response.data) {
       throw new Error("Invalid response structure: " + JSON.stringify(response));
     }
-  
     return response.data;
   };
   

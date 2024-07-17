@@ -1,4 +1,4 @@
-export async function apiRequest<T>(endpoint: string, method: string, api:boolean, token:boolean,  requestData?: any): Promise<T> {
+export async function apiRequest<T>(endpoint: string, method: string, api:boolean, token:boolean,  version: boolean, requestData?: any): Promise<T> {
     const apiUrl = getFairApiUrl();
     const headers: HeadersInit = {
         "Content-Type": "application/json",
@@ -12,25 +12,48 @@ export async function apiRequest<T>(endpoint: string, method: string, api:boolea
         headers["X-API-Key"] = getFairProviderPubApiKey();
     }
 
+    const body: any = { data: requestData || {} };
+    
+    if (version) {
+        body.version = FAIR_API_VERSION;
+      }
+
     const response = await fetch(`${apiUrl}${endpoint}`, {
         method,
         headers,
-        body: requestData ? JSON.stringify(requestData) : undefined,
+        body: JSON.stringify(body),
     });
 
     if (!response.ok) {
-        let errorMessage = `Failed to fetch data. Status code: ${response.status}`;
-        try {
-            const errorData = await response.json();
-            if (errorData && errorData.message) {
-                errorMessage += `, Error message: ${errorData.message}`;
-            }
-        } catch (error: any) {
-            console.error("Failed to parse error response", error);
-            errorMessage += `, Error parsing response: ${error.message}`;
+    let errorMessage = `Failed to fetch data. Status code: ${response.status}`;
+    try {
+      const contentType = response.headers.get("content-type");
+      if (contentType && contentType.includes("application/json")) {
+        const errorData = await response.json();
+        if (errorData && errorData.message) {
+          errorMessage += `, Error message: ${errorData.message}`;
         }
-        throw new Error(errorMessage);
+      } else {
+        const errorText = await response.text();
+        errorMessage += `, Error message: ${errorText}`;
+      }
+    } catch (error: any) {
+      console.error("Failed to parse error response", error);
+      errorMessage += `, Error parsing response: ${error.message}`;
     }
+    throw new Error(errorMessage);
+  }
+  const contentType = response.headers.get("content-type");
+  if (contentType && contentType.includes("application/json")) {
+    return response.json();
+  } else {
+    const textResponse = await response.text();
+    try {
+      return JSON.parse(textResponse);
+    } catch {
+      return textResponse as any;
+    }
+  }
 
     return response.json();
 }
