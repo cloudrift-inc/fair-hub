@@ -12,7 +12,6 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ LoggedIn }) => {
   const router = useRouter();
-  console.log(LoggedIn)
 
   return (
     <div className="h-screen w-64 border-r-2 border-[#222222] bg-[#1C1C1C] p-4 text-small text-white">

@@ -8,11 +8,7 @@ export interface ProfileData {
 export const fetchProfile = async (token: string): Promise<ProfileData> => {
   
     const response = await apiRequest<{ data: ProfileData }>(
-      "/api/v1/auth/me", "POST",false, true,false,{});
-  
-    if (!response || !response.data) {
-      throw new Error("Invalid response structure: " + JSON.stringify(response));
-    }
+      "/api/v1/auth/me",true, true,{});
   
     return {
       name: response.data.name,

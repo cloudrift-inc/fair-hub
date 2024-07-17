@@ -16,7 +16,6 @@ const ConsolePage: NextPage = () => {
       setIsLoggedIn(true);
     }
   }, []);
-  console.log(isLoggedIn);
   
   return (
 

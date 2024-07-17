@@ -1,8 +1,8 @@
-export async function apiRequest<T>(endpoint: string, method: string, api:boolean, token:boolean,  version: boolean, requestData?: any): Promise<T> {
+export async function apiRequest<T>(endpoint: string, api:boolean, token:boolean,  requestData?: any): Promise<T> {
     const apiUrl = getFairApiUrl();
+    const method="POST";
     const headers: HeadersInit = {
         "Content-Type": "application/json",
-        "X-API-Key": getFairProviderPubApiKey(),
     };
     if (token){
         headers["Authorization"] = "Bearer " + localStorage.getItem("token");
@@ -14,9 +14,7 @@ export async function apiRequest<T>(endpoint: string, method: string, api:boolea
 
     const body: any = { data: requestData || {} };
     
-    if (version) {
-        body.version = FAIR_API_VERSION;
-      }
+    body.version = FAIR_API_VERSION;
 
     const response = await fetch(`${apiUrl}${endpoint}`, {
         method,
@@ -24,38 +22,31 @@ export async function apiRequest<T>(endpoint: string, method: string, api:boolea
         body: JSON.stringify(body),
     });
 
-    if (!response.ok) {
-    let errorMessage = `Failed to fetch data. Status code: ${response.status}`;
-    try {
-      const contentType = response.headers.get("content-type");
-      if (contentType && contentType.includes("application/json")) {
-        const errorData = await response.json();
-        if (errorData && errorData.message) {
-          errorMessage += `, Error message: ${errorData.message}`;
-        }
-      } else {
-        const errorText = await response.text();
-        errorMessage += `, Error message: ${errorText}`;
-      }
-    } catch (error: any) {
-      console.error("Failed to parse error response", error);
-      errorMessage += `, Error parsing response: ${error.message}`;
-    }
-    throw new Error(errorMessage);
-  }
-  const contentType = response.headers.get("content-type");
-  if (contentType && contentType.includes("application/json")) {
-    return response.json();
-  } else {
     const textResponse = await response.text();
-    try {
-      return JSON.parse(textResponse);
-    } catch {
-      return textResponse as any;
+    if (!textResponse) {
+        if (!response.ok) {
+            throw new Error(`API call failed with status code: ${response.status}`);
+          }
+        return {} as T; 
     }
-  }
+    let jsonResponse;
+    try {
+        jsonResponse = JSON.parse(textResponse);
+    } catch (error) {
+        throw new Error(`Failed to parse response JSON. Status code: ${response.status}, response: ${textResponse}`);
+    }
 
-    return response.json();
+    if (!response.ok) {
+        let errorMessage = `Failed to fetch data. Status code: ${response.status}`;
+        if (jsonResponse && jsonResponse.message) {
+        errorMessage += `, Error message: ${jsonResponse.message}`;
+        }
+        throw new Error(errorMessage);
+    }
+
+    // Return the parsed JSON response if data is present, otherwise return an empty object
+    return jsonResponse.data ? jsonResponse : ({} as T);
+
 }
 
 export function getFairApiUrl(): string {

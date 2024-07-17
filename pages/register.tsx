@@ -29,14 +29,11 @@ export const signup = async (formData: FormData): Promise<SignupResponse> => {
   };
 
   try {
-    await apiRequest<void>("/api/v1/users/register", "POST", true, false, true, requestData);
+    await apiRequest<void>("/api/v1/users/register", true, false, requestData);
     return { success: true, message: "Registration successful!" };
   } catch (error: any) {
-    if (error.message.includes("409")) {
-      throw new Error("User with email already exists.");
-    } else {
+      console.log(error)
       throw new Error(error.message || "Failed to register. Please try again.");
-    }
   }
 };
 

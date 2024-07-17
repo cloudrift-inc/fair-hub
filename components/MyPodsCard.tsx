@@ -14,8 +14,9 @@ interface MyPodsCardProps {
 }
 
 const stopExecutor = async (executorId: string): Promise<void> => {
-  await apiRequest<void>(`/api/v1/executors/${executorId}/stop`, "POST", true, true,false,{});
+  await apiRequest<void>(`/api/v1/executors/${executorId}/stop`, true, true,true,{});
 };
+
 const MyPodsCard: React.FC<MyPodsCardProps> = ({
   title,
   gpuQuantity,

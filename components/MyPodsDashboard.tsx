@@ -58,11 +58,7 @@ function countBits(hexString: string): number {
 export const fetchExecutors = async (token: string): Promise<ListExecutorsResponse> => {
   const requestData = {all: false };
 
-  const response = await apiRequest<{ data: ListExecutorsResponse }>("/api/v1/executors/list", "POST", true, true, true, requestData);
-
-  if (!response || !response.data || !response.data.executors) {
-    throw new Error("Invalid response structure: " + JSON.stringify(response));
-  }
+  const response = await apiRequest<{ data: ListExecutorsResponse }>("/api/v1/executors/list", true, true,  requestData);
 
   return response.data;
 };
