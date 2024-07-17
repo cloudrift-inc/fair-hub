@@ -7,6 +7,7 @@ import FAQ from "../components/FAQ";
 import Footer from "../components/Footer";
 import "../app/globals.css";
 
+
 export default function Home() {
   return (
     <div>
