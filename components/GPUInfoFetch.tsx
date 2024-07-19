@@ -73,4 +73,34 @@ const useNodeInfo = () => {
     return { nodeInfoList, error, loading };
 };
 
+const useLowestGPUPrice = () => {
+  const [lowestPrice, setLowestPrice] = useState<number | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  const mutation = useMutation<ListNodesResponse, Error>({
+    mutationFn: async () => {
+      return fetchNodeIds();
+    },
+    onSuccess: (data) => {
+      const prices = data.nodes
+        .filter(node => node.instance?.cost_per_hour !== undefined)
+        .map(node => node.instance!.cost_per_hour / 100); // Convert to dollars
+      
+      const lowest = prices.length > 0 ? Math.min(...prices) : null;
+      setLowestPrice(lowest);
+      setLoading(false);
+    },
+    onError: () => {
+      setLoading(false);
+    },
+  });
+
+  useEffect(() => {
+    mutation.mutate();
+  }, []);
+
+  return { lowestPrice, loading };
+};
+
+export { useLowestGPUPrice };
 export default useNodeInfo;
