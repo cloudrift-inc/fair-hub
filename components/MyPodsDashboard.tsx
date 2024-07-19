@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
 import MyPodsCard from './MyPodsCard';
 import { apiRequest } from "@/lib/faircompute";
+import useNodeInfo from "./GPUInfoFetch";
 
 interface ExecutorResourceInfo {
   provider_name: string;
@@ -66,6 +67,12 @@ export const fetchExecutors = async (token: string): Promise<ListExecutorsRespon
 const MyPodsDashboard: React.FC = () => {
   const [executorInfoList, setExecutorInfoList] = useState<ExecutorAndUsageInfo[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const { nodeInfoList, error: nodeInfoError, loading: nodeInfoLoading } = useNodeInfo();
+
+  const getTitle = (nodeId: string) => {
+    const node = nodeInfoList.find(node => node.id === nodeId);
+    return node && node.gpus.length > 0 ? node.gpus[0].brand : "None";
+  };
 
   const mutation = useMutation<ListExecutorsResponse, Error, string>({
     mutationFn: fetchExecutors,
@@ -97,7 +104,7 @@ const MyPodsDashboard: React.FC = () => {
         executorInfoList.map((executorInfo, index) => (
           <MyPodsCard
             key={index}
-            title={`NVIDIA GeForce RTX 4090`}
+            title={getTitle(executorInfo.node_id)}
             gpuQuantity={countBits(executorInfo.gpu_mask)}
             cpuCores={countBits(executorInfo.cpu_mask)}
             ram={`${Math.floor(executorInfo.dram / (1024 * 1024 * 1024))} GB`}

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../app/console.css';
 import MyPodPanel from '../components/MyPodPanel';
-import { useMutation } from "@tanstack/react-query";
+import { useMutation } from '@tanstack/react-query';
 import { apiRequest } from "@/lib/faircompute";
 
 interface MyPodsCardProps {
@@ -14,7 +14,7 @@ interface MyPodsCardProps {
 }
 
 const stopExecutor = async (executorId: string): Promise<void> => {
-  await apiRequest<void>(`/api/v1/executors/${executorId}/stop`, true,{});
+  await apiRequest<void>(`/api/v1/executors/${executorId}/stop`, true, {});
 };
 
 const MyPodsCard: React.FC<MyPodsCardProps> = ({
@@ -26,14 +26,21 @@ const MyPodsCard: React.FC<MyPodsCardProps> = ({
   executorId
 }) => {
   const [isPanelOpen, setPanelOpen] = useState(false);
+  const [executor, setExecutor] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [previousUrl, setPreviousUrl] = useState('');
 
-  const handleShowInstructions = () => {
+  const handleShowInstructions = (id: string) => {
+    setExecutor(id);
+    setPreviousUrl(window.location.href);
     setPanelOpen(true);
+    const newUrl = `${window.location.pathname}&showInstructions=<${id}>`;
+    window.history.pushState({}, '', newUrl);
   };
 
   const handlePanelClose = () => {
     setPanelOpen(false);
+    window.history.pushState({}, '', previousUrl); // Restore the previous URL when closing
   };
 
   const mutation = useMutation<void, Error, string>({
@@ -47,22 +54,19 @@ const MyPodsCard: React.FC<MyPodsCardProps> = ({
 
   const handleStopExecutor = async () => {
     mutation.mutate(executorId);
-    setTimeout(() => {
-      window.location.reload();
-    }, 500);
   };
 
   return (
     <>
       <div
-        className="w-4/5 h-2/3 md:w-[363px] md:h-[285px] relative bg-[#292929] rounded-xl p-4 text-white transition duration-300 ease-in-out "
+        className="w-4/5 h-2/3 md:w-[363px] md:h-[285px] relative bg-[#292929] rounded-xl p-4 text-white transition duration-300 ease-in-out"
       >
         <div className="flex flex-col justify-between h-full">
           <div className="relative flex items-center mb-3">
             <img className="w-8 h-8 rounded-full mr-1" alt="" src="/mask-group.svg" />
             <div className="font-semibold" style={{ fontSize: "16px" }}>{title}</div>
             <div
-              className={`ml-2 font-semibold text-xs px-2 py-1 rounded ${
+              className={`ml-2 font-semibold text-xs px-2 py-1 rounded absolute top-0 right-0 mt-2 mr-2 ${
                 status === 'Active' ? 'bg-[#6FCF97] text-[#219653] border border-[#219653]' :
                 status === 'Created' ? 'bg-[#F3CCFF] text-[#A555EC] border border-[#D09CFA]' :
                 'bg-[#BD3D44] text-[#AE1820] border border-[#AE1820]'
@@ -103,7 +107,7 @@ const MyPodsCard: React.FC<MyPodsCardProps> = ({
             <button
               className="font-bold text-[#6495ED] text-sm px-2 py-1 rounded hover transition duration-300"
               style={{ marginRight: "10px" }}
-              onClick={handleShowInstructions}
+              onClick={() => handleShowInstructions(executorId)}
             >
               Show Instructions
             </button>
