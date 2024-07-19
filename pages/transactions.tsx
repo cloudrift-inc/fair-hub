@@ -7,7 +7,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import StripeTransactionTable from '../components/StripeTransactionTable';
 import UsageTransactionTable from '../components/UsageTransactionTable';
 import '../app/globals.css';
-import { FAIR_API_VERSION, getFairProviderPubApiKey, getFairApiUrl } from "../lib/faircompute";
+import {getFairProviderPubApiKey, getFairApiUrl, getFairApiVersion} from "../lib/faircompute";
 import { PageTitle } from '../components/PageTitle';
 
 
@@ -43,7 +43,7 @@ const fetchTransactions = async (token: string): Promise<Transaction[]> => {
       "X-API-Key": getFairProviderPubApiKey(),
       "Authorization": `Bearer ${token}`,
     },
-    body: JSON.stringify({ version: FAIR_API_VERSION }),
+    body: JSON.stringify({ version: getFairApiVersion() }),
   });
 
   if (!response.ok) {
