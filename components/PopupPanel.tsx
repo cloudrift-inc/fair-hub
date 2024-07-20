@@ -22,7 +22,7 @@ interface PopupPanelProps {
     onClose: () => void;
     gpuName: string;
     price: string;
-    nodeId: string; 
+    nodeId: string;
     gpus: number;
     cpucores: number;
     totalCpus: number;
@@ -36,7 +36,7 @@ export const createExecutor = async (requestData: RequestData): Promise<Response
   
     const response = await apiRequest<{ data: ResponseData }>("/api/v1/marketplace/providers/nodes/rent", true, data);
     return response.data;
-  };
+};
   
 const useCreateExecutor = () => {
     return useMutation<ResponseData, Error, RequestData>({
@@ -44,7 +44,7 @@ const useCreateExecutor = () => {
     });
 };
 
-function PopupPanel({ isOpen, onClose, gpuName, price, nodeId, gpus, cpucores, totalCpus, dram, totalRam, avail_gpus}: PopupPanelProps) {
+function PopupPanel({ isOpen, onClose, gpuName, price, nodeId, gpus, cpucores, totalCpus, dram, totalRam, avail_gpus }: PopupPanelProps) {
     const [gpuQuantity, setGpuQuantity] = React.useState(avail_gpus > 0 ? 1 : 0);
     const [cpuCores, setCpuCores] = React.useState(0);
     const [ram, setRam] = React.useState(0);
@@ -140,7 +140,7 @@ function PopupPanel({ isOpen, onClose, gpuName, price, nodeId, gpus, cpucores, t
             </div>
 
             <div className="flex flex-col w-full space-y-4 ">
-                {gpuName != "None" && (
+                {gpuName !== "None" && (
                     <div className="px-4 py-2 bg-[#292929] rounded-lg">
                         <p className="mb-2 text-xs text-white">Choose GPU Quantity</p>
                         <div className="flex items-center justify-between p-1 bg-neutral-800 rounded-md">
@@ -174,28 +174,19 @@ function PopupPanel({ isOpen, onClose, gpuName, price, nodeId, gpus, cpucores, t
                         </div>
                     </div>
                 )}
-                {gpuName != "None" && (
+                {gpuName !== "None" && (
                     <div className="px-3 py-2 bg-[#292929] rounded-lg">
-                        <p className="mb-2 text-xs text-white">Choose CPU Cores</p>
+                        <p className="mb-2 text-xs text-white">CPU Cores</p>
                         <div className="flex items-center justify-between p-2 bg-neutral-800 rounded-md">
-                            <input
-                                type="range"
-                                min="0"
-                                max={cpucores}
-                                value={cpuCores}
-                                readOnly
-                                className="w-full h-2 bg-neutral-700 rounded-lg appearance-none accent-[#191970]"
-                            />
-                            <span className="ml-4 text-white">{cpuCores}</span>
+                            <span className="text-white">{cpuCores}</span>
                         </div>
                     </div>
                 )}
 
                 <div className="px-3 py-2 bg-[#292929] rounded-lg">
-                    <p className="mb-2 text-xs text-white">Enter Required RAM</p>
+                    <p className="mb-2 text-xs text-white">RAM</p>
                     <div className="flex items-center justify-between p-2 bg-neutral-800 rounded-md">
-                        <input type="number" value={ram} readOnly className="w-full px-2 py-1 text-white bg-transparent outline-none " />
-                        <p className="text-sm text-zinc-400">GB</p>
+                        <span className="text-white">{ram} GB</span>
                     </div>
                 </div>
             </div>
