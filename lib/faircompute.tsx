@@ -12,15 +12,15 @@ export async function apiRequest<T>(endpoint: string, token:boolean,  requestDat
     const body: any = {};
     if (requestData) {
         body.data = requestData;
-        body.version = FAIR_API_VERSION;
+        body.version = getFairApiVersion();
     }
 
     const response = await fetch(`${apiUrl}${endpoint}`, {
         method,
         headers,
         body: JSON.stringify(body),
-    });
-    
+    })
+
     const textResponse = await response.text();
 
     if (!response.ok) {
@@ -98,5 +98,13 @@ export function getOmnisendApiKey(): string {
     return process.env.NEXT_PUBLIC_OMNISEND_API_KEY || '';
 }
 
-
-export const FAIR_API_VERSION = "2024-07-04";
+export function getFairApiVersion(): string {
+    const FAIR_PROD_API_VERSION = "2024-07-04";
+    if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'production') {
+        return FAIR_PROD_API_VERSION;
+    } else if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview') {
+        return FAIR_PROD_API_VERSION;
+    } else {
+        return "~upcoming";
+    }
+}
