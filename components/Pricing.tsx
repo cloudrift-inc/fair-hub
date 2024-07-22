@@ -1,6 +1,7 @@
 import React from "react";
 import "../app/globals.css";
 import GPURentalCard from "./GPURentalCard";
+import { useLowestGPUPrice } from "../components/GPUInfoFetch";
 
 interface PricingPlan {
   id: number;
@@ -12,36 +13,44 @@ interface PricingPlan {
   link: string;
 }
 
-const pricingPlans: PricingPlan[] = [
-  {
-    id: 1,
-    name: "On-Demand GPUs",
-    price: "$0.46 / per hour",
-    description: "Elite performance for advanced projects",
-    features: [
-      "NVidia RTX 4090 servers",
-      "Run containerized workloads",
-      "Versatile tooling for cluster management & monitoring"
-    ],
-    buttonLabel: "Rent a GPU Now",
-    link: "/console",
-  },
-  {
-    id: 2,
-    name: "Dedicated Solutions",
-    price: "Custom pricing",
-    description: "Customized configurations for specialized needs",
-    features: [
-      "Full hardware customization",
-      "Bare metal and VDS solutions",
-      "Dedicated support and account management"
-    ],
-    buttonLabel: "Contact Us",
-    link: "#contactus",
-  },
-];
-
 const Pricing: React.FC = () => {
+  const { lowestPrice, loading } = useLowestGPUPrice();
+
+  const getPrice = () => {
+    if (loading) return "Loading...";
+    if (lowestPrice === null) return "Price unavailable";
+    return `$${lowestPrice.toFixed(2)} / per hour`;
+  };
+
+  const pricingPlans: PricingPlan[] = [
+    {
+      id: 1,
+      name: "On-Demand GPUs",
+      price: getPrice(),
+      description: "Elite performance for advanced projects",
+      features: [
+        "NVidia RTX 4090 servers",
+        "Run containerized workloads",
+        "Versatile tooling for cluster management & monitoring"
+      ],
+      buttonLabel: "Rent a GPU Now",
+      link: "/console",
+    },
+    {
+      id: 2,
+      name: "Dedicated Solutions",
+      price: "Custom pricing",
+      description: "Customized configurations for specialized needs",
+      features: [
+        "Full hardware customization",
+        "Bare metal and VDS solutions",
+        "Dedicated support and account management"
+      ],
+      buttonLabel: "Contact Us",
+      link: "#contactus",
+    },
+  ];
+
   return (
     <div className="min-h-4/5 flex items-center justify-center bg-black" id="pricing">
       <div className="w-full max-w-7xl px-2 py-12 text-white">
