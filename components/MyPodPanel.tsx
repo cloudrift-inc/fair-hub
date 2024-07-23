@@ -111,7 +111,7 @@ function MyPodPanel({ isOpen, onClose , executorId}: MyPodPanelProps) {
           <div className="h-8 flex items-center mb-2">
             <div
                 ref={(ref) => {
-                  codeSnippetRefs.current.instruction1 = ref;
+                  codeSnippetRefs.current.instruction2 = ref;
                 }}
                 className="h-full flex-1 p-2 rounded-l-md text-blue-300 bg-black font-mono"
             >
@@ -120,7 +120,7 @@ function MyPodPanel({ isOpen, onClose , executorId}: MyPodPanelProps) {
             <br/>
             <button
                 className="h-full px-2 py-1 text-teal-500 rounded-r-md hover:bg-blue-500 hover:text-white"
-                onClick={() => copyToClipboard('instruction1')}
+                onClick={() => copyToClipboard('instruction2')}
             >
               <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -143,7 +143,7 @@ function MyPodPanel({ isOpen, onClose , executorId}: MyPodPanelProps) {
           <div className="h-20 flex items-center mb-2">
             <div
                 ref={(ref) => {
-                  codeSnippetRefs.current.instruction2 = ref;
+                  codeSnippetRefs.current.instruction3 = ref;
                 }}
                 className="h-full flex-1 p-2 rounded-l-md text-blue-300 bg-black font-mono"
             >
@@ -153,7 +153,7 @@ function MyPodPanel({ isOpen, onClose , executorId}: MyPodPanelProps) {
             </div>
             <button
                 className="h-full px-2 py-1 text-teal-500 rounded-r-md hover:bg-blue-500 hover:text-white"
-                onClick={() => copyToClipboard('instruction2')}
+                onClick={() => copyToClipboard('instruction3')}
             >
               <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -176,7 +176,7 @@ function MyPodPanel({ isOpen, onClose , executorId}: MyPodPanelProps) {
           <div className="h-20 flex items-center mb-2">
             <div
                 ref={(ref) => {
-                  codeSnippetRefs.current.instruction2 = ref;
+                  codeSnippetRefs.current.instruction4 = ref;
                 }}
                 className="h-full flex-1 p-2 rounded-l-md text-blue-300 bg-black font-mono"
             >
@@ -186,7 +186,7 @@ function MyPodPanel({ isOpen, onClose , executorId}: MyPodPanelProps) {
             </div>
             <button
                 className="h-full px-2 py-1 text-teal-500 rounded-r-md hover:bg-blue-500 hover:text-white"
-                onClick={() => copyToClipboard('instruction2')}
+                onClick={() => copyToClipboard('instruction4')}
             >
               <svg
                   xmlns="http://www.w3.org/2000/svg"
