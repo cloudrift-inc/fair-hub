@@ -25,7 +25,7 @@ const Sidebar: React.FC<SidebarProps> = ({ LoggedIn }) => {
                 }`}
               >
                 <HomeIcon className="mr-2" />
-                Console
+                Rent
               </span>
             </Link>
           </li>
@@ -63,7 +63,7 @@ const Sidebar: React.FC<SidebarProps> = ({ LoggedIn }) => {
                 }`}
               >
                 <SettingsIcon className="mr-2" />
-                Settings and Profile
+                Settings
               </span>
             </Link>
           </li>
