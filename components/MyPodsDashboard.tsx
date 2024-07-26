@@ -25,6 +25,7 @@ interface ExecutorAndUsageInfo {
   status: string;
   resource_info?: ExecutorResourceInfo;
   usage_info?: ExecutorUsageInfo;
+  host_address:string;
 }
 
 interface ListExecutorsResponse {
@@ -110,6 +111,7 @@ const MyPodsDashboard: React.FC = () => {
             ram={`${Math.floor(executorInfo.dram / (1024 * 1024 * 1024))} GB`}
             status={executorInfo.status}
             executorId={executorInfo.id}
+            host_address={executorInfo.host_address}
           />
         ))
       ) : (
