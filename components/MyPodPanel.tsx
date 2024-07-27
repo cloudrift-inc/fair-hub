@@ -221,10 +221,8 @@ function MyPodPanel({ isOpen, onClose , executorId, host_address}: MyPodPanelPro
           </p >
 
           <p className="mt-4 ml-2">
-            The node's IP address is: 
-            <a href={`http://${host_address}`} target="_blank" rel="noopener noreferrer" className="ip-link">
+            The node's IP address is : 
               {host_address}
-            </a>
           </p>       
            </div>
 
