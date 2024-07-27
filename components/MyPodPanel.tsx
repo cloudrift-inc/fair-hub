@@ -68,7 +68,7 @@ function MyPodPanel({ isOpen, onClose , executorId}: MyPodPanelProps) {
             <a className="text-blue-400 underline"
                target="_blank"
                rel="noopener noreferrer"
-               href="https://faircompute.com/docs/getting-started#2-install-fair-desktop-app">
+               href="https://docs.faircompute.com/docs/setup/cli">
               Fair CLI
             </a>&nbsp;
             and run the following commands in your terminal
