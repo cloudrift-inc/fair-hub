@@ -5,9 +5,10 @@ interface MyPodPanelProps {
   isOpen: boolean;
   executorId: string;
   onClose: () => void;
+  host_address : string;
 }
 
-function MyPodPanel({ isOpen, onClose , executorId}: MyPodPanelProps) {
+function MyPodPanel({ isOpen, onClose , executorId, host_address}: MyPodPanelProps) {
   const codeSnippetRefs = React.useRef<{ [key: string]: HTMLDivElement | null }>({
     instruction1: null,
     instruction2: null,
@@ -217,8 +218,13 @@ function MyPodPanel({ isOpen, onClose , executorId}: MyPodPanelProps) {
               documentation
             </a>&nbsp;
             for more information
-          </p>
-        </div>
+          </p >
+
+          <p className="mt-4 ml-2">
+            The node's IP address is : 
+              {host_address}
+          </p>       
+           </div>
 
         <div className="flex justify-end w-full gap-4 px-3 py-6 mt-auto max-md:flex-col max-md:items-stretch">
           <button

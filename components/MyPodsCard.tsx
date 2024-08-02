@@ -3,7 +3,6 @@ import '../app/console.css';
 import MyPodPanel from '../components/MyPodPanel';
 import { useMutation } from '@tanstack/react-query';
 import { apiRequest } from "@/lib/faircompute";
-
 interface MyPodsCardProps {
   title: string;
   gpuQuantity: number;
@@ -11,6 +10,7 @@ interface MyPodsCardProps {
   ram: string;
   status: string;
   executorId: string;
+  host_address:string;
 }
 
 const stopExecutor = async (executorId: string): Promise<void> => {
@@ -23,7 +23,8 @@ const MyPodsCard: React.FC<MyPodsCardProps> = ({
   cpuCores,
   ram,
   status,
-  executorId
+  executorId,
+  host_address
 }) => {
   const [isPanelOpen, setPanelOpen] = useState(false);
   const [executor, setExecutor] = useState('');
@@ -118,7 +119,7 @@ const MyPodsCard: React.FC<MyPodsCardProps> = ({
         <div className="fixed inset-0 z-50 flex items-center justify-center">
           <div className="absolute inset-0 bg-black opacity-50" onClick={handlePanelClose}></div>
           <div className="relative z-10">
-            <MyPodPanel isOpen={isPanelOpen} onClose={handlePanelClose} executorId={executorId} />
+            <MyPodPanel isOpen={isPanelOpen} onClose={handlePanelClose} executorId={executorId} host_address={host_address}/>
           </div>
         </div>
       )}
