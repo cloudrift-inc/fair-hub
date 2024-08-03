@@ -10,7 +10,7 @@ interface RequestData {
     gpus: number;
     dram: number;
     disk: number;
-    auto_deactivate: boolean;
+    public_ip: boolean;
 }
 
 interface ResponseData {
@@ -76,7 +76,7 @@ function PopupPanel({ isOpen, onClose, gpuName, price, nodeId, gpus, cpucores, t
             gpus: gpuQuantity,
             dram: ram * (1024 * 1024 * 1024), // Convert GB to bytes
             disk: 0,
-            auto_deactivate: false,
+            public_ip: false,
         };
 
         mutate(requestData);
