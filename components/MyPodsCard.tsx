@@ -3,6 +3,7 @@ import '../app/console.css';
 import MyPodPanel from '../components/MyPodPanel';
 import { useMutation } from '@tanstack/react-query';
 import { apiRequest } from "@/lib/faircompute";
+
 interface MyPodsCardProps {
   title: string;
   gpuQuantity: number;
@@ -10,7 +11,7 @@ interface MyPodsCardProps {
   ram: string;
   status: string;
   executorId: string;
-  host_address:string;
+  host_address: string;
 }
 
 const stopExecutor = async (executorId: string): Promise<void> => {
@@ -47,6 +48,7 @@ const MyPodsCard: React.FC<MyPodsCardProps> = ({
   const mutation = useMutation<void, Error, string>({
     mutationFn: stopExecutor,
     onSuccess: () => {
+      window.location.reload(); // Refresh the page on success
     },
     onError: (error) => {
       setError(error.message);
@@ -103,7 +105,6 @@ const MyPodsCard: React.FC<MyPodsCardProps> = ({
               onClick={handleStopExecutor}
             >
               Stop
-              {/* <StopIcon className='mr-3' /> */}
             </button>
             <button
               className="font-bold text-[#6495ED] text-sm px-2 py-1 rounded hover transition duration-300"
@@ -119,7 +120,7 @@ const MyPodsCard: React.FC<MyPodsCardProps> = ({
         <div className="fixed inset-0 z-50 flex items-center justify-center">
           <div className="absolute inset-0 bg-black opacity-50" onClick={handlePanelClose}></div>
           <div className="relative z-10">
-            <MyPodPanel isOpen={isPanelOpen} onClose={handlePanelClose} executorId={executorId} host_address={host_address}/>
+            <MyPodPanel isOpen={isPanelOpen} onClose={handlePanelClose} executorId={executorId} host_address={host_address} />
           </div>
         </div>
       )}
