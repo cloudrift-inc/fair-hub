@@ -35,7 +35,6 @@ export const createExecutor = async (requestData: RequestData): Promise<Response
     const data = requestData;
   
     const response = await apiRequest<{ data: ResponseData }>("/api/v1/marketplace/providers/nodes/rent", true, data);
-    console.log(data);
     return response.data;
 };
   
