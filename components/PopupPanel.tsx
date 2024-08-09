@@ -45,17 +45,37 @@ const useCreateExecutor = () => {
 };
 
 function PopupPanel({ isOpen, onClose, gpuName, price, nodeId, gpus, cpucores, totalCpus, dram, totalRam, avail_gpus }: PopupPanelProps) {
-    const [gpuQuantity, setGpuQuantity] = React.useState(avail_gpus > 0 ? 1 : 0);
-    const [cpuCores, setCpuCores] = React.useState(0);
-    const [ram, setRam] = React.useState(0);
+    const [gpuQuantity, setGpuQuantity] = React.useState<number>(avail_gpus > 0 ? 1 : 0);
+    const [cpuCores, setCpuCores] = React.useState<number>(0);
+    const [ram, setRam] = React.useState<number>(0);
+
+
+    const extractPrice = (priceString: string): number => {
+        const match = priceString.match(/[\d.]+/); // Extract numeric value
+        return match ? parseFloat(match[0]) : 0;
+    };
+
+    const initialPrice = extractPrice(price);
+
+    const [totalPrice, setTotalPrice] = React.useState<number>(initialPrice);
+
+
     const [showMyPodPanel, setShowMyPodPanel] = React.useState(false);
     const [isRented, setIsRented] = React.useState(false);
     const { mutate, isPending, isError, data } = useCreateExecutor();
     const router = useRouter();
 
     React.useEffect(() => {
-        let calculatedCpuCores;
-        let calculatedRam;
+        console.log("useEffect triggered");
+
+        let calculatedCpuCores: number;
+        let calculatedRam: number;
+        const parsedPrice = extractPrice(price);
+
+
+        if (isNaN(parsedPrice)) {
+            return;
+        }
 
         if (gpuQuantity > 0 && gpus > 0) {
             calculatedCpuCores = Math.floor((gpuQuantity * totalCpus) / gpus);
@@ -67,7 +87,12 @@ function PopupPanel({ isOpen, onClose, gpuName, price, nodeId, gpus, cpucores, t
 
         setCpuCores(calculatedCpuCores > cpucores ? cpucores : calculatedCpuCores);
         setRam(calculatedRam > dram ? dram : calculatedRam);
-    }, [gpuQuantity, gpus, cpucores, dram, cpuCores]);
+
+        const newTotalPrice = gpuQuantity * parsedPrice;
+        console.log("New total price after calculation in useEffect:", newTotalPrice);
+        setTotalPrice(newTotalPrice); // Use parsedPrice for calculation
+
+    }, [gpuQuantity, gpus, cpucores, dram, cpuCores, price, totalCpus, totalRam]);
 
     const handleSubmit = () => {
         const requestData: RequestData = {
@@ -136,7 +161,7 @@ function PopupPanel({ isOpen, onClose, gpuName, price, nodeId, gpus, cpucores, t
             <div className="flex items-center justify-start px-3 py-2 bg-[#292929] mb-6 mt-8 rounded-lg ">
                 <img loading="lazy" src="/mask-group.svg" className="w-7 h-7 mr-2" alt="USA Flag" />
                 <p className="text-md font-bold text-white">{gpuName}</p>
-                <p className="ml-auto text-sm text-blue-500">{price}</p>
+                <p className="ml-auto text-sm text-blue-500">${!isNaN(totalPrice) ? totalPrice.toFixed(2) : 'N/A'}</p>
             </div>
 
             <div className="flex flex-col w-full space-y-4 ">
