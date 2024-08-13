@@ -8,7 +8,7 @@ interface PageTitleProps {
   prefix?: string;
 }
 
-export function PageTitle({ prefix = 'NeuralRack' }: PageTitleProps) {
+export function PageTitle({ prefix = 'FairCompute' }: PageTitleProps) {
   const router = useRouter();
   const [pageTitle, setPageTitle] = useState(`${prefix}`);
 

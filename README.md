@@ -23,8 +23,6 @@ with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/
 
 If you want to test production deployment locally, you can run `vercel --prod`.
 
-The website will be available at [https://neuralrack.vercel.app/](https://neuralrack.vercel.app/).
-
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
